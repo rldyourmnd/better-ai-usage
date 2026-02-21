@@ -91,12 +91,19 @@ cp configs/starship/starship.toml ~/.config/starship.toml
 
 ## WezTerm Configuration
 
+### Philosophy
+
+**Priority: Stability > Speed > Features**
+
+The config is optimized for long-running AI sessions. If WezTerm GUI crashes, the multiplexer ensures your session survives.
+
 ### Key Features
 
-- **WebGPU + Vulkan rendering** - Hardware GPU acceleration
-- **Built-in multiplexer** - No tmux needed
-- **local_echo_threshold_ms=10** - Minimal perceived latency
-- **Auto GPU selection** - Discrete GPU (NVIDIA/AMD) priority
+- **OpenGL rendering** - Stable GPU acceleration (WebGPU+Vulkan can cause SIGSEGV with NVIDIA 580.x)
+- **Built-in multiplexer** - Session persistence, no tmux needed
+- **local_echo_threshold_ms=10** - Predictive echo for instant feel
+- **Disabled ligatures** - Faster text rendering for AI output streaming
+- **Retro tab bar** - More stable than fancy tab bar
 
 ### Keybindings
 
@@ -116,25 +123,53 @@ cp configs/starship/starship.toml ~/.config/starship.toml
 | Ctrl+Shift+r | Reload config |
 | Ctrl+Shift+L | Debug overlay |
 | Ctrl+Shift+P | Command palette |
+| Ctrl+Shift+E | Toggle ligatures |
 
 ### Quick Select Patterns
 
-Patterns optimized for AI tool output (git hash is built-in default):
+Patterns optimized for AI tool output:
 
 ```lua
 config.quick_select_patterns = {
-  -- File paths (linux/unix style)
-  '[/~][a-zA-Z0-9./_-]+',
-  -- URLs
-  'https?://[^\\s]+',
-  -- IP addresses
-  '\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}',
-  -- UUIDs (common in AI tool output)
-  '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}',
+  '/[a-zA-Z0-9_./-]+/[a-zA-Z0-9_.-]+',  -- Absolute paths
+  '~/[a-zA-Z0-9_./-]+',                  -- Home paths
+  'https?://[^\\s]+',                    -- URLs
+  '\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}(:\\d+)?',  -- IP:port
+  '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}',  -- UUIDs
 }
 ```
 
+### Hyperlink Rules
+
+Clickable links in AI tool output:
+
+```lua
+config.hyperlink_rules = wezterm.default_hyperlink_rules()
+
+-- File paths
+table.insert(config.hyperlink_rules, {
+  regex = '/[a-zA-Z0-9_./-]+/[a-zA-Z0-9_.-]+',
+  format = 'file://$0',
+})
+```
+
 ### GPU Configuration
+
+```lua
+-- OpenGL for maximum stability (WebGPU+Vulkan may cause SIGSEGV with NVIDIA 580.x)
+config.front_end = 'OpenGL'
+
+-- Alternative: WebGPU (uncomment if your drivers support it)
+-- config.front_end = 'WebGpu'
+-- config.webgpu_power_preference = 'HighPerformance'
+-- local gpus = wezterm.gui.enumerate_gpus()
+-- for _, gpu in ipairs(gpus) do
+--   if gpu.backend == 'Vulkan' and gpu.device_type == 'DiscreteGpu' then
+--     config.webgpu_preferred_adapter = gpu
+--     break
+--   end
+-- end
+```
 
 ### Multiplexer Configuration
 
@@ -152,20 +187,24 @@ config.default_gui_startup_args = { 'connect', 'unix' }
 
 ### Appearance Configuration
 
-The config uses modern integrated buttons for a VS Code/Chrome-like experience:
+The config uses retro tab bar for stability (fancy tab bar has complex rendering pipeline):
 
 ```lua
--- Window decorations: integrated buttons in tab bar
-config.window_decorations = 'INTEGRATED_BUTTONS | RESIZE'
-config.use_fancy_tab_bar = true
+config.use_fancy_tab_bar = false
+config.window_decorations = 'TITLE | RESIZE'  -- Classic title bar
 config.hide_tab_bar_if_only_one_tab = false
 config.show_new_tab_button_in_tab_bar = true
 ```
 
-**Alternative options for `window_decorations`:**
-- `'TITLE | RESIZE'` - Classic title bar with window buttons
-- `'RESIZE'` - No decorations, only resize borders
-- `'NONE'` - No decorations at all
+### Text Rendering Optimization
+
+```lua
+-- Disable ligatures for faster text rendering
+-- AI tools stream code with symbols (=>, !=, ===)
+config.harfbuzz_features = { 'calt=0', 'clig=0', 'liga=0' }
+
+-- Toggle ligatures with Ctrl+Shift+E
+```
 
 ---
 
@@ -241,19 +280,27 @@ right_format = "$cmd_duration$jobs"
 ### CPU Optimization
 
 ```lua
--- Reduce CPU overhead
 config.cursor_blink_ease_in = 'Constant'
 config.cursor_blink_ease_out = 'Constant'
+config.text_blink_rate = 0
+config.text_blink_rate_rapid = 0
 config.check_for_updates = false
 config.audible_bell = 'Disabled'
 config.visual_bell = { fade_in_duration_ms = 0, fade_out_duration_ms = 0 }
 config.window_close_confirmation = 'NeverPrompt'
-config.skip_close_confirmation_for_processes_named = {}
+config.skip_close_confirmation_for_processes_named = {
+  'bash', 'sh', 'zsh', 'fish', 'tmux', 'nu', 'cmd.exe', 'pwsh.exe',
+}
+
+-- Instant Alt key response
+config.send_composed_key_when_left_alt_is_pressed = false
+config.send_composed_key_when_right_alt_is_pressed = false
 ```
 
 | Setting | Value | Effect |
 |---------|-------|--------|
 | cursor_blink_ease | Constant | No easing calculations |
+| text_blink_rate | 0 | No text blinking |
 | check_for_updates | false | No background network |
 | audible_bell | Disabled | No sound processing |
 | visual_bell | 0ms | No animation |

@@ -1,60 +1,68 @@
 -- ═══════════════════════════════════════════════════════════════════════════════
--- WEZTERM CONFIGURATION - High-Performance Terminal Environment
+-- WEZTERM CONFIGURATION - Balanced: Speed + Stability + AI Tools
 -- ═══════════════════════════════════════════════════════════════════════════════
--- Performance: WebGPU + Vulkan
--- Features: Built-in multiplexer, GPU acceleration, Lua scripting
+-- System: NVIDIA RTX 2070, Vulkan, Wayland
+-- Goal: MAXIMUM SPEED with GUARANTEED STABILITY for long-running AI sessions
+-- Priority: Stability > Speed > Features
 
 local wezterm = require 'wezterm'
 local config = wezterm.config_builder()
 
 -- ═══════════════════════════════════════════════════════════════════════════════
--- GPU RENDERING - WebGPU + Vulkan (optimized for NVIDIA RTX)
+-- GPU RENDERING - OpenGL for MAXIMUM STABILITY
 -- ═══════════════════════════════════════════════════════════════════════════════
-config.front_end = 'WebGpu'
+-- WebGPU + Vulkan caused SIGSEGV with NVIDIA driver 580.x
+-- OpenGL is more stable and still GPU-accelerated
+config.front_end = 'OpenGL'
 
--- Auto-select Vulkan discrete GPU (NVIDIA, AMD)
-local gpus = wezterm.gui.enumerate_gpus()
-for _, gpu in ipairs(gpus) do
-  if gpu.backend == 'Vulkan' and gpu.device_type == 'DiscreteGpu' then
-    config.webgpu_preferred_adapter = gpu
-    break
-  end
-end
+-- NOTE: If you want to try WebGPU again later (after driver update),
+-- uncomment the following and comment out 'OpenGL' above:
+-- config.front_end = 'WebGpu'
+-- config.webgpu_power_preference = 'HighPerformance'
+-- local gpus = wezterm.gui.enumerate_gpus()
+-- for _, gpu in ipairs(gpus) do
+--   if gpu.backend == 'Vulkan' and gpu.device_type == 'DiscreteGpu' then
+--     config.webgpu_preferred_adapter = gpu
+--     break
+--   end
+-- end
 
 -- ═══════════════════════════════════════════════════════════════════════════════
--- PERFORMANCE - Minimal latency for AI tools
+-- MULTIPLEXER - CRITICAL FOR STABILITY (session persistence)
+-- ═══════════════════════════════════════════════════════════════════════════════
+-- KEEP ENABLED: If WezTerm GUI crashes, your Claude Code session survives!
+-- The 10ms local echo makes it feel instant while maintaining stability
+config.unix_domains = {
+  {
+    name = 'unix',
+    socket_path = '/tmp/wezterm-gui-sock',
+    local_echo_threshold_ms = 10,  -- Predictive echo = feels instant
+  },
+}
+
+config.default_gui_startup_args = { 'connect', 'unix' }
+
+-- ═══════════════════════════════════════════════════════════════════════════════
+-- RENDERING PERFORMANCE - Zero overhead for AI tool output streaming
 -- ═══════════════════════════════════════════════════════════════════════════════
 config.max_fps = 120
 config.animation_fps = 1
 config.cursor_blink_rate = 0
 config.cursor_blink_ease_in = 'Constant'
 config.cursor_blink_ease_out = 'Constant'
+config.text_blink_rate = 0
+config.text_blink_rate_rapid = 0
 
--- Large scrollback for AI tool output (Claude Code, etc.)
-config.scrollback_lines = 50000
+-- Disable ligatures for faster text rendering (STABLE optimization)
+-- AI tools stream massive amounts of code with symbols (=>, !=, ===)
+config.harfbuzz_features = { 'calt=0', 'clig=0', 'liga=0' }
 
--- Terminal capabilities for modern tools
-config.term = 'wezterm'
+-- Retro tab bar = faster rendering + MORE STABLE than fancy tab bar
+-- Fancy tab bar has more complex rendering pipeline
+config.use_fancy_tab_bar = false
 
--- Reduce CPU overhead
-config.check_for_updates = false
-config.audible_bell = 'Disabled'
-config.visual_bell = { fade_in_duration_ms = 0, fade_out_duration_ms = 0 }
-config.window_close_confirmation = 'NeverPrompt'
-config.skip_close_confirmation_for_processes_named = {}
-
--- ═══════════════════════════════════════════════════════════════════════════════
--- MULTIPLEXER - Built-in, no tmux needed
--- ═══════════════════════════════════════════════════════════════════════════════
-config.unix_domains = {
-  {
-    name = 'unix',
-    socket_path = '/tmp/wezterm-gui-sock',
-    local_echo_threshold_ms = 10,
-  },
-}
-
-config.default_gui_startup_args = { 'connect', 'unix' }
+-- Scrollback: balanced for cache locality + sufficient history
+config.scrollback_lines = 35000
 
 -- ═══════════════════════════════════════════════════════════════════════════════
 -- WAYLAND - Native Linux support
@@ -62,16 +70,36 @@ config.default_gui_startup_args = { 'connect', 'unix' }
 config.enable_wayland = true
 
 -- ═══════════════════════════════════════════════════════════════════════════════
+-- TERMINAL CAPABILITIES - For modern AI tools
+-- ═══════════════════════════════════════════════════════════════════════════════
+config.term = 'wezterm'
+config.enable_kitty_keyboard = true  -- Advanced keyboard protocol
+
+-- ═══════════════════════════════════════════════════════════════════════════════
 -- DEFAULT SHELL - Fish as primary
 -- ═══════════════════════════════════════════════════════════════════════════════
 config.default_prog = { '/usr/bin/fish', '-l' }
 
 -- ═══════════════════════════════════════════════════════════════════════════════
--- APPEARANCE - Modern with integrated buttons
+-- REDUCE OVERHEAD (stable optimizations)
+-- ═══════════════════════════════════════════════════════════════════════════════
+config.check_for_updates = false
+config.audible_bell = 'Disabled'
+config.visual_bell = { fade_in_duration_ms = 0, fade_out_duration_ms = 0 }
+config.window_close_confirmation = 'NeverPrompt'
+config.skip_close_confirmation_for_processes_named = {
+  'bash', 'sh', 'zsh', 'fish', 'tmux', 'nu', 'cmd.exe', 'pwsh.exe',
+}
+
+-- Instant Alt key response
+config.send_composed_key_when_left_alt_is_pressed = false
+config.send_composed_key_when_right_alt_is_pressed = false
+
+-- ═══════════════════════════════════════════════════════════════════════════════
+-- APPEARANCE - Speed-optimized (retro tab bar for stability)
 -- ═══════════════════════════════════════════════════════════════════════════════
 config.enable_scroll_bar = false
-config.window_decorations = 'INTEGRATED_BUTTONS|RESIZE'
-config.use_fancy_tab_bar = true
+config.window_decorations = 'TITLE | RESIZE'  -- MORE STABLE than INTEGRATED_BUTTONS
 config.hide_tab_bar_if_only_one_tab = false
 config.show_new_tab_button_in_tab_bar = true
 config.window_padding = {
@@ -82,7 +110,7 @@ config.window_padding = {
 }
 
 -- Font configuration
-config.font = wezterm.font 'JetBrains Mono'
+config.font = wezterm.font { family = 'JetBrains Mono', weight = 'Regular' }
 config.font_size = 12.0
 config.line_height = 1.1
 
@@ -103,15 +131,33 @@ config.colors = {
   },
 }
 
--- Quick select patterns for AI tool output (git hash is already default)
+-- ═══════════════════════════════════════════════════════════════════════════════
+-- HYPERLINK RULES - Immediately clickable links in AI tool output
+-- ═══════════════════════════════════════════════════════════════════════════════
+config.hyperlink_rules = wezterm.default_hyperlink_rules()
+
+-- Additional rules for AI tool output
+table.insert(config.hyperlink_rules, {
+  regex = '/[a-zA-Z0-9_./-]+/[a-zA-Z0-9_.-]+',
+  format = 'file://$0',
+})
+table.insert(config.hyperlink_rules, {
+  regex = '~/[a-zA-Z0-9_./-]+',
+  format = 'file://$0',
+})
+table.insert(config.hyperlink_rules, {
+  regex = '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}',
+  format = 'https://#$0',
+})
+
+-- ═══════════════════════════════════════════════════════════════════════════════
+-- QUICK SELECT PATTERNS - For AI tool output
+-- ═══════════════════════════════════════════════════════════════════════════════
 config.quick_select_patterns = {
-  -- File paths (linux/unix style)
-  '[/~][a-zA-Z0-9./_-]+',
-  -- URLs (more permissive)
+  '/[a-zA-Z0-9_./-]+/[a-zA-Z0-9_.-]+',
+  '~/[a-zA-Z0-9_./-]+',
   'https?://[^\\s]+',
-  -- IP addresses
-  '\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}',
-  -- UUIDs (common in AI tool output)
+  '\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}(:\\d+)?',
   '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}',
 }
 
@@ -158,12 +204,28 @@ config.keys = {
   { key = '-', mods = 'CTRL|SHIFT', action = act.DecreaseFontSize },
   { key = '0', mods = 'CTRL|SHIFT', action = act.ResetFontSize },
 
-  -- Debug and utilities (essential for troubleshooting)
+  -- Debug and utilities
   { key = 'L', mods = 'CTRL|SHIFT', action = act.ShowDebugOverlay },
   { key = 'P', mods = 'CTRL|SHIFT', action = act.ActivateCommandPalette },
+
+  -- Toggle ligatures (useful for code readability)
+  { key = 'E', mods = 'CTRL|SHIFT', action = act.EmitEvent 'toggle-ligature' },
 }
 
--- Mouse bindings (optimized for AI workflow)
+-- Toggle ligature event
+wezterm.on('toggle-ligature', function(window, pane)
+  local overrides = window:get_config_overrides() or {}
+  if not overrides.harfbuzz_features then
+    overrides.harfbuzz_features = { 'calt=0', 'clig=0', 'liga=0' }
+  else
+    overrides.harfbuzz_features = nil
+  end
+  window:set_config_overrides(overrides)
+end)
+
+-- ═══════════════════════════════════════════════════════════════════════════════
+-- MOUSE BINDINGS
+-- ═══════════════════════════════════════════════════════════════════════════════
 config.mouse_bindings = {
   -- Ctrl+Click to open links
   {
@@ -171,7 +233,7 @@ config.mouse_bindings = {
     mods = 'CTRL',
     action = act.OpenLinkAtMouseCursor,
   },
-  -- Disable Ctrl+Down to avoid issues in vim/tmux
+  -- Disable Ctrl+Down to avoid issues in vim
   {
     event = { Down = { streak = 1, button = 'Left' } },
     mods = 'CTRL',
