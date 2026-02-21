@@ -76,7 +76,6 @@ config.window_padding = {
 config.font = wezterm.font 'JetBrains Mono'
 config.font_size = 12.0
 config.line_height = 1.1
-config.font_shaper = 'Harfbuzz'  -- Better font rendering
 
 -- Color scheme
 config.color_scheme = 'Catppuccin Mocha'
@@ -95,16 +94,16 @@ config.colors = {
   },
 }
 
--- Quick select patterns for common items
+-- Quick select patterns for AI tool output (git hash is already default)
 config.quick_select_patterns = {
-  -- File paths
-  '[/~]?[a-zA-Z0-9./_-]+',
-  -- Git hashes
-  '[a-f0-9]{7,40}',
-  -- URLs
+  -- File paths (linux/unix style)
+  '[/~][a-zA-Z0-9./_-]+',
+  -- URLs (more permissive)
   'https?://[^\\s]+',
   -- IP addresses
   '\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}',
+  -- UUIDs (common in AI tool output)
+  '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}',
 }
 
 -- ═══════════════════════════════════════════════════════════════════════════════
@@ -149,15 +148,25 @@ config.keys = {
   { key = '=', mods = 'CTRL|SHIFT', action = act.IncreaseFontSize },
   { key = '-', mods = 'CTRL|SHIFT', action = act.DecreaseFontSize },
   { key = '0', mods = 'CTRL|SHIFT', action = act.ResetFontSize },
+
+  -- Debug and utilities (essential for troubleshooting)
+  { key = 'L', mods = 'CTRL|SHIFT', action = act.ShowDebugOverlay },
+  { key = 'P', mods = 'CTRL|SHIFT', action = act.ActivateCommandPalette },
 }
 
--- Mouse bindings
+-- Mouse bindings (optimized for AI workflow)
 config.mouse_bindings = {
   -- Ctrl+Click to open links
   {
     event = { Up = { streak = 1, button = 'Left' } },
     mods = 'CTRL',
     action = act.OpenLinkAtMouseCursor,
+  },
+  -- Disable Ctrl+Down to avoid issues in vim/tmux
+  {
+    event = { Down = { streak = 1, button = 'Left' } },
+    mods = 'CTRL',
+    action = act.Nop,
   },
   -- Double click to select word
   {
