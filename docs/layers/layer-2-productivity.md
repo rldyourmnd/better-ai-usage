@@ -1,57 +1,63 @@
-# Layer 2: Productivity
+# Layer 2: Productivity - Complete Guide
 
-> Tools that dramatically speed up daily workflows
+> Speed-focused tools for navigation, history, and development workflow
 
 ## Overview
 
-Productivity tools for fast navigation, history management, and package management. This layer focuses on reducing friction in everyday terminal operations.
+Layer 2 provides productivity tools that dramatically improve daily workflow:
 
-## Tools
+| Tool | Score | Purpose | Key Feature |
+|------|-------|---------|-------------|
+| **fzf** | 88.7 | Fuzzy finder | Ctrl+R history, Ctrl+T files |
+| **zoxide** | 95.5 | Smart cd | Frecency-based navigation |
+| **atuin** | 90.5 | History sync | SQLite + encrypted sync |
+| **uv** | 94.3 | Python packages | 10-100x faster than pip |
+| **bun** | 92.7 | JavaScript runtime | 3x faster than npm |
+| **watchexec** | 89.9 | File watcher | Auto-restart on changes |
+| **glow** | 88.2 | Markdown renderer | Terminal markdown |
+| **bottom** | 91.5 | System monitor | htop alternative |
+| **hyperfine** | 94.1 | Benchmarking | Statistical analysis |
 
-| Tool | Score | Purpose |
-|------|-------|---------|
-| **fzf** | 85.4 | Fuzzy finder for files, history, commands |
-| **zoxide** | 39.7 | Smart cd with frecency learning |
-| **Atuin** | 68.5 | SQLite history with encrypted sync |
-| **uv** | 91.4 | Python package manager (10-100x faster than pip) |
-| **bun** | 85 | JavaScript runtime (3-10x faster than npm) |
-| **watchexec** | - | Auto-run commands on file changes |
-| **glow** | 76.1 | Markdown renderer for terminal |
-| **bottom** | - | System monitor (htop replacement) |
-| **hyperfine** | 81.3 | Command benchmarking tool |
+---
 
 ## Installation
 
-```bash
-# fzf (85.4) - fuzzy finder
-sudo apt install -y fzf
-# Or for latest version:
-git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
-~/.fzf/install
+### Quick Install
 
-# zoxide - smart cd
+```bash
+./scripts/install-layer-2.sh
+```
+
+### Manual Installation
+
+```bash
+# fzf (88.7) - fuzzy finder
+git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+~/.fzf/install --key-bindings --completion --no-update-rc --no-bash --no-zsh
+
+# zoxide (95.5) - smart cd
 cargo install zoxide
 
-# Atuin (68.5) - history sync
-curl --proto '=https' --tlsv1.2 -LsSf https://setup.atuin.sh | sh
+# atuin (90.5) - history sync
+curl --proto '=https' --tlsv1.2 -sSf https://setup.atuin.sh | sh
 
-# uv (91.4) - Python package manager
+# uv (94.3) - Python package manager
 curl -LsSf https://astral.sh/uv/install.sh | sh
 
-# bun (85) - JavaScript runtime
+# bun (92.7) - JavaScript runtime
 curl -fsSL https://bun.sh/install | bash
 
-# watchexec - file watcher
+# watchexec (89.9) - file watcher
 cargo install watchexec
 
-# glow (76.1) - markdown renderer
-sudo apt install -y glow
+# glow (88.2) - markdown renderer (download binary)
+curl -sL https://github.com/charmbracelet/glow/releases/latest/download/glow_linux_amd64.tar.gz | tar xz
+sudo mv glow /usr/local/bin/
 
-# bottom - system monitor
+# bottom (91.5) - system monitor
 cargo install bottom
-# Or: sudo apt install -y bottom
 
-# hyperfine (81.3) - benchmarking
+# hyperfine (94.1) - benchmarking
 cargo install hyperfine
 ```
 
@@ -252,3 +258,104 @@ eval "$(atuin init zsh)"
 | Install JS package | npm | bun | 3-10x |
 | Directory navigation | cd | zoxide | 5-10x |
 | History search | Ctrl+R | Atuin | Better UX |
+
+---
+
+## Troubleshooting
+
+### 1. fzf key bindings not working
+
+**Cause:** Fish integration not sourced.
+
+**Solution:**
+```bash
+fzf --fish | source
+```
+
+Add to `~/.config/fish/config.fish`:
+```fish
+fzf --fish | source
+```
+
+### 2. zoxide: "database not found"
+
+**Cause:** No directories indexed yet.
+
+**Solution:**
+```bash
+cd ~/projects
+cd ~/documents
+z projects  # Now works
+```
+
+### 3. atuin: "failed to connect to server"
+
+**Cause:** Sync server unreachable (optional feature).
+
+**Solution:**
+```bash
+# Disable sync (local only)
+atuin logout
+```
+
+### 4. uv: "command not found"
+
+**Cause:** PATH not updated after installation.
+
+**Solution:**
+```bash
+source ~/.cargo/env
+# or restart shell
+exec fish
+```
+
+### 5. bun: "command not found"
+
+**Cause:** bun install path not in PATH.
+
+**Solution:**
+Add to `~/.config/fish/config.fish`:
+```fish
+set -gx BUN_INSTALL $HOME/.bun
+set -gx PATH $BUN_INSTALL/bin $PATH
+```
+
+### 6. bottom: high CPU usage
+
+**Cause:** Default update interval too fast.
+
+**Solution:**
+Create `~/.config/bottom/bottom.toml`:
+```toml
+[dot_marker]
+disabled = true
+
+[cpu]
+default = "average"
+```
+
+---
+
+## Verification
+
+```bash
+# Check all tools
+for tool in fzf zoxide atuin uv bun watchexec glow btm hyperfine; do
+    if command -v $tool &>/dev/null; then
+        echo "✅ $tool: $($tool --version 2>/dev/null | head -1)"
+    else
+        echo "❌ $tool: NOT INSTALLED"
+    fi
+done
+```
+
+---
+
+## Next Steps
+
+After Layer 2 is complete:
+- **Layer 3: GitHub & Git** - gh CLI, lazygit, delta
+
+```bash
+./scripts/install-layer-3.sh
+```
