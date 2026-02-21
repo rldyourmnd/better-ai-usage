@@ -114,21 +114,27 @@ cp configs/starship/starship.toml ~/.config/starship.toml
 | Ctrl+Shift+c | Copy |
 | Ctrl+Shift+v | Paste |
 | Ctrl+Shift+r | Reload config |
+| Ctrl+Shift+L | Debug overlay |
+| Ctrl+Shift+P | Command palette |
 
-### GPU Configuration
+### Quick Select Patterns
+
+Patterns optimized for AI tool output (git hash is built-in default):
 
 ```lua
-config.front_end = 'WebGpu'
-config.webgpu_power_preference = 'HighPerformance'
-
--- Auto-select Vulkan discrete GPU
-for _, gpu in ipairs(wezterm.gui.enumerate_gpus()) do
-  if gpu.backend == 'Vulkan' and gpu.device_type == 'DiscreteGpu' then
-    config.webgpu_preferred_adapter = gpu
-    break
-  end
-end
+config.quick_select_patterns = {
+  -- File paths (linux/unix style)
+  '[/~][a-zA-Z0-9./_-]+',
+  -- URLs
+  'https?://[^\\s]+',
+  -- IP addresses
+  '\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}',
+  -- UUIDs (common in AI tool output)
+  '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}',
+}
 ```
+
+### GPU Configuration
 
 ### Multiplexer Configuration
 
