@@ -106,8 +106,8 @@ config.keys = {
   { key = 'Tab', mods = 'CTRL', action = act.ActivateTabRelative(1) },
   { key = 'Tab', mods = 'CTRL|SHIFT', action = act.ActivateTabRelative(-1) },
 
-  -- Quick search with fzf
-  { key = 'f', mods = 'CTRL|SHIFT', action = act.Search 'CurrentDomain' },
+  -- Quick search
+  { key = 'f', mods = 'CTRL|SHIFT', action = act.Search 'CurrentSelectionOrEmptyString' },
 
   -- Copy/paste
   { key = 'c', mods = 'CTRL|SHIFT', action = act.CopyTo 'Clipboard' },
