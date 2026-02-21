@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="https://github.com/rldyourmnd/better-terminal-usage">
+  <a href="https://github.com/rldyourmnd/rld-better-terminal-ai-usage">
     <img src="docs/assets/banner.svg" alt="Better Terminal Usage Banner" width="100%">
   </a>
 </p>
@@ -15,21 +15,21 @@
   <a href="#-quick-start">Quick Start</a> •
   <a href="#-installation">Installation</a> •
   <a href="#-architecture">Architecture</a> •
-  <a href="https://github.com/rldyourmnd/better-terminal-usage/wiki">Wiki</a>
+  <a href="https://github.com/rldyourmnd/rld-better-terminal-ai-usage/wiki">Wiki</a>
 </p>
 
 <p align="center">
-  <a href="https://github.com/rldyourmnd/better-terminal-usage/stargazers">
-    <img src="https://img.shields.io/github/stars/rldyourmnd/better-terminal-usage?style=for-the-badge&logo=github&color=yellow" alt="Stars">
+  <a href="https://github.com/rldyourmnd/rld-better-terminal-ai-usage/stargazers">
+    <img src="https://img.shields.io/github/stars/rldyourmnd/rld-better-terminal-ai-usage?style=for-the-badge&logo=github&color=yellow" alt="Stars">
   </a>
-  <a href="https://github.com/rldyourmnd/better-terminal-usage/network/members">
-    <img src="https://img.shields.io/github/forks/rldyourmnd/better-terminal-usage?style=for-the-badge&logo=github&color=blue" alt="Forks">
+  <a href="https://github.com/rldyourmnd/rld-better-terminal-ai-usage/network/members">
+    <img src="https://img.shields.io/github/forks/rldyourmnd/rld-better-terminal-ai-usage?style=for-the-badge&logo=github&color=blue" alt="Forks">
   </a>
-  <a href="https://github.com/rldyourmnd/better-terminal-usage/issues">
-    <img src="https://img.shields.io/github/issues/rldyourmnd/better-terminal-usage?style=for-the-badge&logo=github" alt="Issues">
+  <a href="https://github.com/rldyourmnd/rld-better-terminal-ai-usage/issues">
+    <img src="https://img.shields.io/github/issues/rldyourmnd/rld-better-terminal-ai-usage?style=for-the-badge&logo=github" alt="Issues">
   </a>
-  <a href="https://github.com/rldyourmnd/better-terminal-usage/blob/main/LICENSE">
-    <img src="https://img.shields.io/github/license/rldyourmnd/better-terminal-usage?style=for-the-badge&color=green" alt="License">
+  <a href="https://github.com/rldyourmnd/rld-better-terminal-ai-usage/blob/main/LICENSE">
+    <img src="https://img.shields.io/github/license/rldyourmnd/rld-better-terminal-ai-usage?style=for-the-badge&color=green" alt="License">
   </a>
 </p>
 
@@ -134,7 +134,7 @@ semgrep for static analysis, protecting your code from vulnerabilities.
 
 ```bash
 # Clone the repository
-git clone https://github.com/rldyourmnd/better-terminal-usage.git
+git clone https://github.com/rldyourmnd/rld-better-terminal-ai-usage.git
 cd better-terminal-usage
 
 # Run the installer
@@ -316,8 +316,8 @@ Contributions are welcome! Please read our [Contributing Guide](CONTRIBUTING.md)
 
 ### Ways to Contribute
 
-- 🐛 **Report bugs** via [Issues](https://github.com/rldyourmnd/better-terminal-usage/issues)
-- 💡 **Suggest features** via [Discussions](https://github.com/rldyourmnd/better-terminal-usage/discussions)
+- 🐛 **Report bugs** via [Issues](https://github.com/rldyourmnd/rld-better-terminal-ai-usage/issues)
+- 💡 **Suggest features** via [Discussions](https://github.com/rldyourmnd/rld-better-terminal-ai-usage/discussions)
 - 📝 **Improve documentation**
 - 🔧 **Submit pull requests**
 
@@ -347,8 +347,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 </p>
 
 <p align="center">
-  <a href="https://github.com/rldyourmnd/better-terminal-usage/stargazers">
-    <img src="https://img.shields.io/github/stars/rldyourmnd/better-terminal-usage?style=social" alt="Star us on GitHub">
+  <a href="https://github.com/rldyourmnd/rld-better-terminal-ai-usage/stargazers">
+    <img src="https://img.shields.io/github/stars/rldyourmnd/rld-better-terminal-ai-usage?style=social" alt="Star us on GitHub">
   </a>
   <a href="https://github.com/rldyourmnd">
     <img src="https://img.shields.io/github/followers/rldyourmnd?style=social" alt="Follow on GitHub">
