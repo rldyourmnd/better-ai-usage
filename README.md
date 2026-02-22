@@ -145,7 +145,7 @@ Full live snapshot: `context/system-state.md`.
 ```bash
 # Clone the repository
 git clone https://github.com/rldyourmnd/rld-better-terminal-ai-usage.git
-cd better-terminal-usage
+cd rld-better-terminal-ai-usage
 
 # Run the installer
 ./scripts/install.sh
@@ -158,7 +158,7 @@ That's it! Your terminal is now optimized. 🎉
 
 ### Starship Profiles (stable-max / ultra-max)
 
-After install, two prompt profiles are available:
+After install, two prompt profiles are available (`ultra-max` is applied by default):
 
 ```bash
 # List available profiles
@@ -167,7 +167,7 @@ starship-profile list
 # Switch to stable (high signal, lower noise)
 starship-profile stable-max
 
-# Switch to ultra (Jetpack++ rich mode)
+# Switch to ultra (Jetpack++ rich mode, neon cyberpunk palette)
 starship-profile ultra-max
 ```
 
@@ -261,7 +261,8 @@ starship-profile ultra-max
 | [gemini CLI](https://github.com/google-gemini/gemini-cli) | Google | Fast research and analysis |
 | [codex CLI](https://github.com/openai/codex) | OpenAI | Code generation |
 
-> **Note**: Layer 5 tools are not installed by this project. Install them separately from their official sources.
+> **Note**: `install.sh` and `install-layer-5.sh` install Layer 5 CLIs via npm (`@anthropic-ai/claude-code`, `@google/gemini-cli`, `@openai/codex`).  
+> You still need to authenticate each CLI after installation.
 
 </details>
 
