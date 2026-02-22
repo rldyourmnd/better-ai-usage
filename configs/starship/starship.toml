@@ -1,20 +1,35 @@
 # ═══════════════════════════════════════════════════════════════════════════════
-# STARSHIP CONFIGURATION - High-Performance Terminal Environment
+# STARSHIP CONFIGURATION - Ultimate AI Terminal Environment
 # ═══════════════════════════════════════════════════════════════════════════════
 # Performance: <5ms startup, Rust-based
-# Style: Minimal, high contrast for optimal visibility
+# Style: Two-line, compact, maximum info for AI work
 
 # ═══════════════════════════════════════════════════════════════════════════════
-# FORMAT - Minimal left, info on right
+# FORMAT - Two lines, info on right
 # ═══════════════════════════════════════════════════════════════════════════════
-format = "$directory$git_branch$git_status$character"
+# Line 1: datetime | directory | git | metrics | (right: duration | jobs)
+# Line 2: character
+format = """
+$time$directory$git_branch$git_status$git_metrics$line_break$character"""
 right_format = "$cmd_duration$jobs"
+
+# No extra blank line
+add_newline = false
 
 # ═══════════════════════════════════════════════════════════════════════════════
 # SCAN TIMEOUTS - Fast performance
 # ═══════════════════════════════════════════════════════════════════════════════
 scan_timeout = 10
 command_timeout = 100
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# TIME & DATE - Compact format
+# ═══════════════════════════════════════════════════════════════════════════════
+[time]
+disabled = false
+format = "[$time]($style) "
+style = "dimmed white"
+time_format = "%d-%m-%y %H:%M"  # 22-02-26 15:30
 
 # ═══════════════════════════════════════════════════════════════════════════════
 # DIRECTORY
@@ -49,6 +64,14 @@ staged = "+"
 renamed = "»"
 deleted = "✘"
 
+[git_metrics]
+disabled = false
+added_style = "bold green"
+deleted_style = "bold red"
+format = " [+$added]($added_style)/[-$deleted]($deleted_style)"
+only_nonzero_diffs = true
+ignore_submodules = true
+
 # ═══════════════════════════════════════════════════════════════════════════════
 # COMMAND DURATION
 # ═══════════════════════════════════════════════════════════════════════════════
@@ -66,7 +89,7 @@ style = "bold yellow"
 format = "[$symbol$number]($style) "
 
 # ═══════════════════════════════════════════════════════════════════════════════
-# CHARACTER (prompt)
+# CHARACTER (prompt) - Line 2
 # ═══════════════════════════════════════════════════════════════════════════════
 [character]
 success_symbol = "[❯](bold green)"
@@ -175,6 +198,9 @@ disabled = true
 [kotlin]
 disabled = true
 
+[localip]
+disabled = true
+
 [lua]
 disabled = true
 
@@ -209,6 +235,9 @@ disabled = true
 disabled = true
 
 [purescript]
+disabled = true
+
+[quarto]
 disabled = true
 
 [rlang]
@@ -247,7 +276,7 @@ disabled = true
 [terraform]
 disabled = true
 
-[time]
+[typst]
 disabled = true
 
 [username]
