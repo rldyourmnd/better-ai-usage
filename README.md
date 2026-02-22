@@ -2,7 +2,7 @@
 
 <p align="center">
   <a href="https://github.com/rldyourmnd/rld-better-terminal-ai-usage">
-    <img src="docs/assets/banner.svg" alt="Better Terminal Usage Banner" width="100%">
+    <img src="docs/assets/terminal-screenshot.png" alt="Better Terminal Usage screenshot" width="100%">
   </a>
 </p>
 
