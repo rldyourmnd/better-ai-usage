@@ -1,9 +1,13 @@
 -- ═══════════════════════════════════════════════════════════════════════════════
--- WEZTERM CONFIGURATION - Balanced: Speed + Stability + AI Tools
+-- WEZTERM CONFIGURATION - Multi-Monitor Stability for NVIDIA
 -- ═══════════════════════════════════════════════════════════════════════════════
--- System: NVIDIA RTX 2070, Vulkan, Wayland
--- Goal: MAXIMUM SPEED with GUARANTEED STABILITY for long-running AI sessions
+-- System: NVIDIA RTX 2070, X11 (Wayland disabled for multi-monitor stability)
+-- Goal: GUARANTEED STABILITY for long-running AI sessions on multi-monitor setup
 -- Priority: Stability > Speed > Features
+--
+-- KNOWN ISSUE FIXED: Crashing when moving window to second monitor
+-- ROOT CAUSE: NVIDIA + Wayland + Multi-monitor = GPU context loss
+-- SOLUTION: Disable Wayland, use X11 for stable multi-monitor support
 
 local wezterm = require 'wezterm'
 local config = wezterm.config_builder()
@@ -15,17 +19,21 @@ local config = wezterm.config_builder()
 -- OpenGL is more stable and still GPU-accelerated
 config.front_end = 'OpenGL'
 
--- NOTE: If you want to try WebGPU again later (after driver update),
--- uncomment the following and comment out 'OpenGL' above:
--- config.front_end = 'WebGpu'
--- config.webgpu_power_preference = 'HighPerformance'
--- local gpus = wezterm.gui.enumerate_gpus()
--- for _, gpu in ipairs(gpus) do
---   if gpu.backend == 'Vulkan' and gpu.device_type == 'DiscreteGpu' then
---     config.webgpu_preferred_adapter = gpu
---     break
---   end
--- end
+-- ═══════════════════════════════════════════════════════════════════════════════
+-- WAYLAND - DISABLED for NVIDIA Multi-Monitor Stability
+-- ═══════════════════════════════════════════════════════════════════════════════
+-- CRITICAL: NVIDIA + Wayland has issues with multi-monitor setups
+-- When window moves between displays, GPU context can be lost causing crash
+-- X11 is more stable for NVIDIA multi-monitor configurations
+config.enable_wayland = false
+
+-- NOTE: If you experience issues with X11 or have single monitor:
+-- config.enable_wayland = true
+-- But for NVIDIA + Multi-Monitor, keep Wayland DISABLED
+
+-- FALLBACK: If OpenGL still causes issues, use Software rendering
+-- Uncomment below to use CPU-based rendering (slower but most stable):
+-- config.front_end = 'Software'
 
 -- ═══════════════════════════════════════════════════════════════════════════════
 -- MULTIPLEXER - CRITICAL FOR STABILITY (session persistence)
@@ -43,9 +51,10 @@ config.unix_domains = {
 config.default_gui_startup_args = { 'connect', 'unix' }
 
 -- ═══════════════════════════════════════════════════════════════════════════════
--- RENDERING PERFORMANCE - Zero overhead for AI tool output streaming
+-- RENDERING PERFORMANCE - Stable settings for multi-monitor
 -- ═══════════════════════════════════════════════════════════════════════════════
-config.max_fps = 120
+-- Conservative 60fps for multi-monitor stability (matches most monitor refresh)
+config.max_fps = 60
 config.animation_fps = 1
 config.cursor_blink_rate = 0
 config.cursor_blink_ease_in = 'Constant'
@@ -63,11 +72,6 @@ config.use_fancy_tab_bar = false
 
 -- Scrollback: balanced for cache locality + sufficient history
 config.scrollback_lines = 35000
-
--- ═══════════════════════════════════════════════════════════════════════════════
--- WAYLAND - Native Linux support
--- ═══════════════════════════════════════════════════════════════════════════════
-config.enable_wayland = true
 
 -- ═══════════════════════════════════════════════════════════════════════════════
 -- TERMINAL CAPABILITIES - For modern AI tools
@@ -96,10 +100,11 @@ config.send_composed_key_when_left_alt_is_pressed = false
 config.send_composed_key_when_right_alt_is_pressed = false
 
 -- ═══════════════════════════════════════════════════════════════════════════════
--- APPEARANCE - Speed-optimized (retro tab bar for stability)
+-- APPEARANCE - Stability-optimized for multi-monitor
 -- ═══════════════════════════════════════════════════════════════════════════════
 config.enable_scroll_bar = false
 config.window_decorations = 'TITLE | RESIZE'  -- MORE STABLE than INTEGRATED_BUTTONS
+config.window_background_opacity = 1.0  -- NO transparency = better multi-monitor stability
 config.hide_tab_bar_if_only_one_tab = false
 config.show_new_tab_button_in_tab_bar = true
 config.window_padding = {
