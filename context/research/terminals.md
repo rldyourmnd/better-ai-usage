@@ -2,7 +2,7 @@
 
 > Research conducted via  - February 2026
 
-##  Benchmark Scores
+## Benchmark Scores
 
 | Terminal | Score | Language | GPU | Multiplexer |
 |----------|-------|----------|-----|-------------|

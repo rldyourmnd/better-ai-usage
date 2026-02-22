@@ -450,7 +450,7 @@ sudo chmod +x /usr/local/bin/yq
 **Cause:** Terminal doesn't support Nerd Fonts.
 
 **Solution:**
-1. Install a Nerd Font: https://www.nerdfonts.com/
+1. Install a Nerd Font: [nerdfonts.com](https://www.nerdfonts.com/)
 2. Configure terminal to use it
 3. Or use without icons: `eza --no-icons`
 

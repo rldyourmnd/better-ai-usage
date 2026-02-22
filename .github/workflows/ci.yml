@@ -35,10 +35,9 @@ jobs:
         uses: DavidAnson/markdownlint-cli2-action@v15
         with:
           globs: |
-            README.md
-            CONTRIBUTING.md
-            CHANGELOG.md
-            docs/**/*.md
+            **/*.md
+            !.serena/**
+            !node_modules/**
 
   link-check:
     runs-on: ubuntu-latest
