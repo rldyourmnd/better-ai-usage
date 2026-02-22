@@ -58,6 +58,40 @@ else
     log_info "bat already installed"
 fi
 
+# fd (86.1) - find replacement
+if ! command_exists fd && ! command_exists fdfind; then
+    log_info "Installing fd-find..."
+    sudo apt install -y fd-find
+    log_success "fd-find installed"
+else
+    log_info "fd-find already installed"
+fi
+
+# fd symlink (Ubuntu installs as fdfind, not fd)
+if command_exists fdfind && ! command_exists fd; then
+    mkdir -p ~/.local/bin
+    ln -sf /usr/bin/fdfind ~/.local/bin/fd
+    log_success "fd symlink created (~/.local/bin/fd -> /usr/bin/fdfind)"
+fi
+
+# rg (81) - grep replacement
+if ! command_exists rg; then
+    log_info "Installing ripgrep..."
+    sudo apt install -y ripgrep
+    log_success "ripgrep installed"
+else
+    log_info "ripgrep already installed"
+fi
+
+# eza - ls replacement
+if ! command_exists eza; then
+    log_info "Installing eza..."
+    sudo apt install -y eza
+    log_success "eza installed"
+else
+    log_info "eza already installed"
+fi
+
 # jq (85.7) - JSON processor
 if ! command_exists jq; then
     log_info "Installing jq..."
