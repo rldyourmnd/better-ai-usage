@@ -106,87 +106,77 @@ if command -q fzf
 end
 
 # ═══════════════════════════════════════════════════════════════════════════════
-# ABBREVIATIONS - Navigation
+# ABBREVIATIONS
 # ═══════════════════════════════════════════════════════════════════════════════
-abbr -a z 'zoxide'
-abbr -a zz 'z -'
-abbr -a .. 'cd ..'
-abbr -a ... 'cd ../..'
-abbr -a .... 'cd ../../..'
+function __set_abbr --argument-names name expansion
+    if abbr -q $name
+        abbr --erase $name
+    end
+    abbr --add --global $name $expansion
+end
 
-# ═══════════════════════════════════════════════════════════════════════════════
-# ABBREVIATIONS - File operations
-# ═══════════════════════════════════════════════════════════════════════════════
-abbr -a ls 'eza'
-abbr -a ll 'eza -la'
-abbr -a lt 'eza --tree --level=2'
-abbr -a cat 'bat'
+__set_abbr z 'zoxide'
+__set_abbr zz 'z -'
+__set_abbr .. 'cd ..'
+__set_abbr ... 'cd ../..'
+__set_abbr .... 'cd ../../..'
 
-# ═══════════════════════════════════════════════════════════════════════════════
-# System monitoring
-# ═══════════════════════════════════════════════════════════════════════════════
-abbr -a bottom 'btm'
+__set_abbr ls 'eza'
+__set_abbr ll 'eza -la'
+__set_abbr lt 'eza --tree --level=2'
+__set_abbr cat 'bat'
+__set_abbr bottom 'btm'
 
-# ═════════════════════════════════════════════════════════════════════════════
-# Git
-# ═══════════════════════════════════════════════════════════════════════════════
-abbr -a g 'git'
-abbr -a gs 'git status'
-abbr -a ga 'git add'
-abbr -a gc 'git commit'
-abbr -a gp 'git push'
-abbr -a gl 'git log --oneline -10'
-abbr -a gd 'git diff'
-abbr -a lg 'lazygit'
+__set_abbr g 'git'
+__set_abbr gs 'git status'
+__set_abbr ga 'git add'
+__set_abbr gc 'git commit'
+__set_abbr gp 'git push'
+__set_abbr gl 'git log --oneline -10'
+__set_abbr gd 'git diff'
+__set_abbr lg 'lazygit'
 
-# ═══════════════════════════════════════════════════════════════════════════════
-# GitHub CLI
-# ═══════════════════════════════════════════════════════════════════════════════
-abbr -a gh 'gh'
-abbr -a ghp 'gh pr'
-abbr -a ghi 'gh issue'
-abbr -a ghr 'gh repo'
+__set_abbr gh 'gh'
+__set_abbr ghp 'gh pr'
+__set_abbr ghi 'gh issue'
+__set_abbr ghr 'gh repo'
 
-# ═══════════════════════════════════════════════════════════════════════════════
-# Python
-# ═════════════════════════════════════════════════════════════════════════════
-abbr -a py 'python3'
-abbr -a pip 'uv pip'
-abbr -a venv 'uv venv'
+__set_abbr py 'python3'
+__set_abbr pip 'uv pip'
+__set_abbr venv 'uv venv'
 
-# ═══════════════════════════════════════════════════════════════════════════════
-# Development
-# ═════════════════════════════════════════════════════════════════════════════════
-abbr -a nv 'nvim'
-abbr -a code 'code .'
+__set_abbr nv 'nvim'
+__set_abbr code 'code .'
 
-# ═══════════════════════════════════════════════════════════════════════════════
-# AI Tools (Layer 5 - User-provided CLIs)
-# ═════════════════════════════════════════════════════════════════════════════
-# Claude - skip permission prompts for faster workflow
-abbr -a cl 'claude --dangerously-skip-permissions'
-# Gemini - auto-approve mode for non-interactive use
-abbr -a gem 'gemini --yolo'
-# Codex - full auto mode for autonomous execution
-abbr -a cx 'codex --full-auto'
+__set_abbr cl 'claude --dangerously-skip-permissions'
+__set_abbr gem 'gemini --yolo'
+__set_abbr cx 'codex --full-auto'
+
+functions --erase __set_abbr
 
 # ═════════════════════════════════════════════════════════════════════════════
 # FUNCTIONS
 # ═════════════════════════════════════════════════════════════════════════════
 function proj
-    cd ~/projects/$argv[1]
+    if test -n "$argv[1]"
+        cd ~/projects/$argv[1]
+    end
 end
 
 function mkcd
-    mkdir -p $argv[1] && cd $argv[1]
+    if test -n "$argv[1]"
+        mkdir -p -- "$argv[1]"; and cd -- "$argv[1]"
+    end
 end
 
 function backup
-    cp $argv[1] $argv[1].bak.(date +%Y%m%d_%H%M%S)
+    if test -f "$argv[1]"
+        cp -- "$argv[1]" "$argv[1].bak."(date +%Y%m%d_%H%M%S)
+    end
 end
 
 function ducks
-    du -sh * | sort -h
+    du -sh -- * | sort -h
 end
 
 function ff
