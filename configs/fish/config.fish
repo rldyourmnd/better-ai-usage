@@ -1,55 +1,71 @@
 # ═══════════════════════════════════════════════════════════════════════════════
 # FISH CONFIGURATION - Ultimate AI Terminal Environment
 # ═══════════════════════════════════════════════════════════════════════════════
-# Performance: ~30ms startup (benchmark: fish --profile-startup /tmp/fish.prof -ic exit)
-# Features: Conditional sourcing, transient prompt ready, AI-optimized abbreviations
+# Priority: Stability > AI CLI compatibility > speed
 
 # ═══════════════════════════════════════════════════════════════════════════════
-# PATH SETUP - Use fish_add_path for proper persistence
+# PATH SETUP - Deterministic and shell-local (global scope, no universal drift)
 # ═══════════════════════════════════════════════════════════════════════════════
-# AI Tools
-fish_add_path ~/.local/bin                    # claude, grepai, bat, lazygit
-fish_add_path ~/.claude/local/bin             # claude local tools
-fish_add_path ~/.atuin/bin                    # atuin
+set -l __path_candidates \
+    ~/.local/bin \
+    ~/.claude/local/bin \
+    ~/.atuin/bin \
+    ~/.cargo/bin \
+    ~/.bun/bin \
+    ~/.local/share/pnpm \
+    /usr/local/go/bin \
+    /home/linuxbrew/.linuxbrew/bin \
+    /home/linuxbrew/.linuxbrew/sbin \
+    ~/.pulumi/bin \
+    ~/Android/Sdk/emulator \
+    ~/Android/Sdk/platform-tools \
+    ~/.local/share/pipx
 
-# Development runtimes
-fish_add_path ~/.cargo/bin                    # rust tools: btm, delta, probe, ast-grep
-fish_add_path ~/.bun/bin                      # bun
-fish_add_path ~/.local/share/pnpm             # pnpm
-fish_add_path /usr/local/go/bin               # go
-
-# Homebrew
-fish_add_path /home/linuxbrew/.linuxbrew/bin
-fish_add_path /home/linuxbrew/.linuxbrew/sbin
+for path in $__path_candidates
+    if test -d $path
+        fish_add_path -g $path
+    end
+end
+set -e __path_candidates
 
 # Python venvs (conditional - only add if exists)
 if test -d ~/.local/venvs/ai-ml/bin
-    fish_add_path ~/.local/venvs/ai-ml/bin
+    fish_add_path -g ~/.local/venvs/ai-ml/bin
 end
 if test -d ~/.local/venvs/vllm/bin
-    fish_add_path ~/.local/venvs/vllm/bin
+    fish_add_path -g ~/.local/venvs/vllm/bin
 end
 
-# Node (nvm) - use default or detect active version
+# Node (nvm): prefer explicit default alias, normalize "24.13.1" -> "v24.13.1".
 if test -d ~/.nvm/versions/node
-    # Try to use nvm's default version, fallback to highest version
-    set nvm_default (cat ~/.nvm/alias/default 2>/dev/null || echo "")
+    set -l nvm_default ""
+    if test -f ~/.nvm/alias/default
+        set nvm_default (string trim -- (cat ~/.nvm/alias/default))
+    end
+
+    if test -n "$nvm_default"; and not string match -rq '^v' -- $nvm_default
+        set nvm_default "v$nvm_default"
+    end
+
     if test -n "$nvm_default"; and test -d ~/.nvm/versions/node/$nvm_default/bin
-        fish_add_path ~/.nvm/versions/node/$nvm_default/bin
+        fish_add_path -g ~/.nvm/versions/node/$nvm_default/bin
     else
-        # Fallback: use highest installed node version (deterministic).
-        set node_version (ls -1 ~/.nvm/versions/node 2>/dev/null | sort -V | tail -1)
+        set -l node_version (ls -1 ~/.nvm/versions/node 2>/dev/null | sort -V | tail -1)
         if test -n "$node_version"; and test -d ~/.nvm/versions/node/$node_version/bin
-            fish_add_path ~/.nvm/versions/node/$node_version/bin
+            fish_add_path -g ~/.nvm/versions/node/$node_version/bin
         end
     end
 end
 
-# Other tools
-fish_add_path ~/.pulumi/bin
-fish_add_path ~/Android/Sdk/emulator
-fish_add_path ~/Android/Sdk/platform-tools
-fish_add_path ~/.local/share/pipx
+# Remove duplicated PATH entries inherited from parent environment (e.g. /snap/bin).
+set -l __path_dedup
+for path in $PATH
+    if not contains -- $path $__path_dedup
+        set -a __path_dedup $path
+    end
+end
+set -gx PATH $__path_dedup
+set -e __path_dedup
 
 # ═══════════════════════════════════════════════════════════════════════════════
 # TOOL INITIALIZATION - Conditional sourcing for stability
