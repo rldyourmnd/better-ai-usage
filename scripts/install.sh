@@ -241,6 +241,47 @@ fi
 log_success "Layer 4 complete!"
 
 # ═══════════════════════════════════════════════════════════════════════════════
+# LAYER 5: AI ORCHESTRATION (User-provided CLIs)
+# ═══════════════════════════════════════════════════════════════════════════════
+log_info "Installing Layer 5: AI Orchestration..."
+
+# Check for npm/node
+if ! command_exists npm; then
+    log_warn "npm not found. Installing nodejs..."
+    curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash -
+    sudo apt install -y nodejs
+fi
+
+# Claude Code (80.6)
+if ! command_exists claude; then
+    log_info "Installing Claude Code..."
+    npm install -g @anthropic-ai/claude-code
+    log_success "Claude Code installed"
+else
+    log_info "Claude Code already installed"
+fi
+
+# Gemini CLI (78.2)
+if ! command_exists gemini; then
+    log_info "Installing Gemini CLI..."
+    npm install -g @google/gemini-cli
+    log_success "Gemini CLI installed"
+else
+    log_info "Gemini CLI already installed"
+fi
+
+# Codex CLI (56.9)
+if ! command_exists codex; then
+    log_info "Installing Codex CLI..."
+    npm install -g @openai/codex
+    log_success "Codex CLI installed"
+else
+    log_info "Codex CLI already installed"
+fi
+
+log_success "Layer 5 complete!"
+
+# ═══════════════════════════════════════════════════════════════════════════════
 # FOUNDATION: TERMINAL + SHELL
 # ═══════════════════════════════════════════════════════════════════════════════
 log_info "Installing Foundation..."
@@ -302,13 +343,25 @@ log_success "Starship config applied"
 # ═══════════════════════════════════════════════════════════════════════════════
 echo ""
 echo -e "${GREEN}════════════════════════════════════════════════════════════${NC}"
-echo -e "${GREEN}  INSTALLATION COMPLETE!                                     ${NC}"
+echo -e "${GREEN}  ALL 5 LAYERS + FOUNDATION COMPLETE!                        ${NC}"
 echo -e "${GREEN}════════════════════════════════════════════════════════════${NC}"
+echo ""
+echo "Layers installed:"
+echo "  Foundation: WezTerm + Fish + Starship"
+echo "  Layer 1:    bat, fd, rg, sd, jq, yq, eza"
+echo "  Layer 2:    fzf, zoxide, atuin, uv, bun, watchexec, glow, bottom"
+echo "  Layer 3:    gh CLI, lazygit, delta"
+echo "  Layer 4:    grepai, ast-grep, probe, semgrep, ctags, tokei"
+echo "  Layer 5:    Claude Code, Gemini CLI, Codex CLI"
 echo ""
 echo "Next steps:"
 echo "1. Restart your terminal or run: exec fish"
 echo "2. Initialize grepai: grepai init"
 echo "3. Login to GitHub CLI: gh auth login"
 echo "4. Login to Atuin (optional): atuin login"
+echo "5. Authenticate AI CLIs:"
+echo "   - claude (browser auth opens automatically)"
+echo "   - gemini (select 'Login with Google')"
+echo "   - codex (export OPENAI_API_KEY='your-key')"
 echo ""
-echo "Enjoy your High-Performance Terminal Environment!"
+echo "Enjoy your Ultimate AI Terminal Environment!"
