@@ -147,6 +147,9 @@ __set_abbr venv 'uv venv'
 
 __set_abbr nv 'nvim'
 __set_abbr code 'code .'
+__set_abbr sp 'starship-profile'
+__set_abbr sps 'starship-profile stable-max'
+__set_abbr spu 'starship-profile ultra-max'
 
 __set_abbr cl 'claude --dangerously-skip-permissions'
 __set_abbr gem 'gemini --yolo'
