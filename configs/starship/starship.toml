@@ -7,11 +7,10 @@ scan_timeout = 60
 command_timeout = 1800
 continuation_prompt = "[▸▹ ](dimmed fg:overlay1)"
 
-format = """($nix_shell$container$fill$git_metrics${custom.ai_stack}\n)$cmd_duration$status$sudo$jobs$username$hostname$localip$character"""
+format = """($nix_shell$container$directory$fill$git_metrics${custom.ai_stack}\n)$cmd_duration$status$sudo$jobs$username$hostname$localip$character"""
 
 right_format = """
 $os\
-$directory\
 $git_branch\
 $git_commit\
 $git_state\
@@ -64,16 +63,16 @@ vimcmd_visual_symbol = "[▼](bold fg:yellow)"
 description = "Shows available AI CLIs"
 command = """
 parts=()
-command -v claude >/dev/null 2>&1 && parts+=("CC")
-command -v gemini >/dev/null 2>&1 && parts+=("✦GEM")
-command -v codex >/dev/null 2>&1 && parts+=("CX")
+command -v claude >/dev/null 2>&1 && parts+=(" CC")
+command -v gemini >/dev/null 2>&1 && parts+=(" GEM")
+command -v codex >/dev/null 2>&1 && parts+=(" CX")
 printf "%s" "${parts[*]}"
 """
 when = """ command -v claude >/dev/null 2>&1 || command -v gemini >/dev/null 2>&1 || command -v codex >/dev/null 2>&1 """
 shell = ["bash", "--noprofile", "--norc", "-c"]
 use_stdin = false
 format = "[$output ]($style)"
-style = "bold fg:sky"
+style = "bold fg:mauve"
 
 [cmd_duration]
 min_time = 300
@@ -105,7 +104,7 @@ style = "fg:text"
 
 [username]
 show_always = true
-style_user = "bold fg:yellow"
+style_user = "bold fg:mauve"
 style_root = "bold fg:red"
 format = "[ $user ]($style)"
 
@@ -118,7 +117,7 @@ style = "bold fg:peach"
 disabled = false
 ssh_only = true
 format = "[ $localipv4 ]($style)"
-style = "bold fg:mauve"
+style = "bold fg:sky"
 
 [os]
 disabled = false
@@ -131,20 +130,21 @@ Linux = ""
 Unknown = ""
 
 [directory]
-home_symbol = ""
-truncation_length = 3
-truncation_symbol = "…/"
+home_symbol = "/home/rldyourmnd"
+truncate_to_repo = false
+truncation_length = 99
+truncation_symbol = ""
 read_only = " 󰌾"
 use_os_path_sep = true
-style = "italic bold fg:blue"
+style = "italic bold fg:sky"
 format = "[$path]($style)[$read_only]($read_only_style) "
-repo_root_style = "bold fg:blue"
-repo_root_format = "[$before_root_path]($before_repo_root_style)[$repo_root]($repo_root_style)[$path]($style)[$read_only]($read_only_style) [△](bold fg:blue) "
+repo_root_style = "bold fg:mauve"
+repo_root_format = "[$before_root_path]($before_repo_root_style)[$repo_root]($repo_root_style)[$path]($style)[$read_only]($read_only_style) [△](bold fg:mauve) "
 
 [git_branch]
 format = "[$symbol$branch(:$remote_branch) ]($style)"
 symbol = " "
-style = "italic bold fg:blue"
+style = "italic bold fg:sky"
 truncation_symbol = "⋯"
 truncation_length = 20
 ignore_branches = ["main", "master"]
@@ -161,7 +161,7 @@ format = "[\\($state( $progress_current/$progress_total)\\) ]($style)"
 style = "bold fg:yellow"
 
 [git_status]
-style = "bold italic fg:blue"
+style = "bold italic fg:mauve"
 format = "([⎪$ahead_behind$staged$modified$untracked$renamed$deleted$conflicted$stashed⎥]($style) )"
 conflicted = "◪◦ "
 ahead = "▴${count} "
@@ -177,7 +177,7 @@ deleted = "✕${count} "
 [git_metrics]
 disabled = false
 format = "([▴$added]($added_style))([▿$deleted]($deleted_style)) "
-added_style = "italic bold fg:green"
+added_style = "italic bold fg:sky"
 deleted_style = "italic bold fg:red"
 ignore_submodules = true
 
@@ -348,16 +348,16 @@ format = "[pixi $symbol$version($environment )]($style)"
 style = "bold fg:teal"
 
 [palettes.ultra_ai]
-text = "#cdd6f4"
-subtext1 = "#bac2de"
-overlay2 = "#9399b2"
-overlay1 = "#7f849c"
-blue = "#89b4fa"
-sky = "#89dceb"
-teal = "#94e2d5"
-green = "#a6e3a1"
-yellow = "#f9e2af"
-orange = "#fab387"
-peach = "#fab387"
-red = "#f38ba8"
-mauve = "#cba6f7"
+text = "#d7f7ff"
+subtext1 = "#b8c7ff"
+overlay2 = "#7f88bf"
+overlay1 = "#646da1"
+blue = "#00d9ff"
+sky = "#2cf5ff"
+teal = "#00ffd5"
+green = "#3dffb4"
+yellow = "#f6ff4a"
+orange = "#ff9f1c"
+peach = "#ff75d8"
+red = "#ff2d95"
+mauve = "#ff4fd8"
