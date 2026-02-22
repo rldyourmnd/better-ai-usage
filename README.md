@@ -64,7 +64,7 @@ Replace bloated configs with optimized Fish + Starship setup achieving ~30ms sta
 <td width="50%">
 
 ### 🖥️ **GPU-Accelerated Terminal**
-WezTerm with WebGPU/Vulkan rendering for butter-smooth scrolling and rendering.
+WezTerm with OpenGL rendering (X11 mode for NVIDIA multi-monitor stability).
 
 </td>
 </tr>
@@ -119,23 +119,26 @@ semgrep for static analysis, protecting your code from vulnerabilities.
 ├─────────────────────────────────────────────────────────────────────┤
 │                                                                     │
 │  LAYER 2: PRODUCTIVITY                                             │
-│  fzf (v0.68) • zoxide (v0.9.9) • Atuin (v18.12) • uv (0.10.4)     │
-│  bun (v1.3.9) • watchexec • glow • bottom (0.12.3)                │
+│  fzf (0.68.0) • zoxide (0.9.9) • Atuin (18.12.1) • uv (0.10.4)    │
+│  bun (1.3.9) • watchexec (2.3.3) • glow • bottom (0.12.3)         │
 │                                                                     │
 ├─────────────────────────────────────────────────────────────────────┤
 │                                                                     │
 │  LAYER 1: FILE OPERATIONS                                          │
-│  bat (v0.26) • fd (v10.3) • rg (15.1) • sd (v1.0)                 │
-│  jq (1.8.1) • yq (v4.52) • eza (v0.23)                            │
+│  bat (0.26.1) • fd/fdfind (10.3.0) • rg (15.1.0) • sd (1.0.0)     │
+│  jq (1.8.1) • yq (4.52.4) • eza (0.21.0)                          │
 │                                                                     │
 ├─────────────────────────────────────────────────────────────────────┤
 │                                                                     │
 │  FOUNDATION                                                        │
 │  WezTerm + Fish + Starship                                         │
-│  WebGPU/Vulkan • ~30ms startup • <5ms latency                      │
+│  OpenGL + X11 (Wayland off) • ~30ms startup • <5ms latency         │
 │                                                                     │
 └─────────────────────────────────────────────────────────────────────┘
 ```
+
+System snapshot for versions/rendering in this diagram: `2026-02-23T01:20:38+07:00`.
+Full live snapshot: `context/system-state.md`.
 
 ## 🚀 Quick Start
 
