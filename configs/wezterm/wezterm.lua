@@ -30,14 +30,9 @@ end
 -- ═══════════════════════════════════════════════════════════════════════════════
 -- WAYLAND - DISABLED for NVIDIA Multi-Monitor Stability
 -- ═══════════════════════════════════════════════════════════════════════════════
--- CRITICAL: NVIDIA + Wayland has issues with multi-monitor setups
--- When window moves between displays, GPU context can be lost causing crash
--- X11 is more stable for NVIDIA multi-monitor configurations
+-- CRITICAL: Different refresh rates across monitors cause GPU context loss
+-- under Wayland. XWayland is stable for NVIDIA multi-monitor setups.
 config.enable_wayland = false
-
--- NOTE: If you experience issues with X11 or have single monitor:
--- config.enable_wayland = true
--- But for NVIDIA + Multi-Monitor, keep Wayland DISABLED
 
 -- FALLBACK: If OpenGL still causes issues, use Software rendering
 -- Uncomment below to use CPU-based rendering (slower but most stable):
@@ -74,9 +69,8 @@ config.text_blink_rate_rapid = 0
 -- AI tools stream massive amounts of code with symbols (=>, !=, ===)
 config.harfbuzz_features = { 'calt=0', 'clig=0', 'liga=0' }
 
--- Retro tab bar = faster rendering + MORE STABLE than fancy tab bar
--- Fancy tab bar has more complex rendering pipeline
-config.use_fancy_tab_bar = false
+-- Fancy tab bar: native close buttons, styled chrome via window_frame
+config.use_fancy_tab_bar = true
 
 -- Scrollback: lower memory pressure for long AI sessions while keeping deep history.
 config.scrollback_lines = 20000
@@ -121,15 +115,16 @@ config.send_composed_key_when_right_alt_is_pressed = false
 -- APPEARANCE - Stability-optimized for multi-monitor
 -- ═══════════════════════════════════════════════════════════════════════════════
 config.enable_scroll_bar = false
-config.window_decorations = 'TITLE | RESIZE'  -- MORE STABLE than INTEGRATED_BUTTONS
+config.window_decorations = 'TITLE | RESIZE'
 config.window_background_opacity = 1.0  -- NO transparency = better multi-monitor stability
 config.hide_tab_bar_if_only_one_tab = false
 config.show_new_tab_button_in_tab_bar = true
+config.tab_max_width = 32
 config.window_padding = {
-  left = 5,
-  right = 5,
-  top = 5,
-  bottom = 5,
+  left = 10,
+  right = 10,
+  top = 8,
+  bottom = 8,
 }
 
 -- Font configuration
@@ -142,21 +137,63 @@ config.font = wezterm.font_with_fallback {
 config.font_size = 12.0
 config.line_height = 1.1
 
--- Color scheme
+-- Cyberpunk neon color scheme (synced with Starship ultra_ai palette)
 config.color_scheme = 'Catppuccin Mocha'
 config.colors = {
   background = '#0b1020',
   foreground = '#d7f7ff',
   cursor_bg = '#2cf5ff',
   cursor_fg = '#0b1020',
+  cursor_border = '#2cf5ff',
   selection_fg = '#0b1020',
   selection_bg = '#ff4fd8',
+  ansi = {
+    '#090d1a', '#ff2d95', '#3dffb4', '#f6ff4a',
+    '#00d9ff', '#ff4fd8', '#2cf5ff', '#d7f7ff',
+  },
+  brights = {
+    '#7f88bf', '#ff75d8', '#00ffd5', '#f6ff4a',
+    '#2cf5ff', '#ff9f1c', '#00d9ff', '#ffffff',
+  },
+  split = '#ff4fd8',  -- neon pink pane dividers
   tab_bar = {
     background = '#090d1a',
-    active_tab = { bg_color = '#111833', fg_color = '#2cf5ff' },
+    active_tab = { bg_color = '#111833', fg_color = '#2cf5ff', intensity = 'Bold' },
     inactive_tab = { bg_color = '#090d1a', fg_color = '#7f88bf' },
-    new_tab = { bg_color = '#090d1a', fg_color = '#ff4fd8' },
+    inactive_tab_hover = { bg_color = '#111833', fg_color = '#ff4fd8', italic = true },
+    new_tab = { bg_color = '#090d1a', fg_color = '#646da1' },
+    new_tab_hover = { bg_color = '#111833', fg_color = '#2cf5ff' },
   },
+}
+
+-- Fancy tab bar chrome styling
+config.window_frame = {
+  font = wezterm.font { family = 'JetBrains Mono', weight = 'Bold' },
+  font_size = 12.0,
+  active_titlebar_bg = '#090d1a',
+  inactive_titlebar_bg = '#090d1a',
+  button_fg = '#7f88bf',
+  button_bg = '#111833',
+  button_hover_fg = '#2cf5ff',
+  button_hover_bg = '#222050',
+}
+
+-- ═══════════════════════════════════════════════════════════════════════════════
+-- BACKGROUND GRADIENT - Subtle vertical depth
+-- ═══════════════════════════════════════════════════════════════════════════════
+config.window_background_gradient = {
+  orientation = 'Vertical',
+  colors = { '#0b1020', '#0a0d1e', '#0d0820' },
+  interpolation = 'Linear',
+  blend = 'Rgb',
+}
+
+-- ═══════════════════════════════════════════════════════════════════════════════
+-- PANE FOCUS - Active pane pops, inactive fades
+-- ═══════════════════════════════════════════════════════════════════════════════
+config.inactive_pane_hsb = {
+  saturation = 0.7,
+  brightness = 0.6,
 }
 
 -- ═══════════════════════════════════════════════════════════════════════════════
@@ -188,6 +225,66 @@ config.quick_select_patterns = {
   '\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}(:\\d+)?',
   '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}',
 }
+
+-- ═══════════════════════════════════════════════════════════════════════════════
+-- TAB BAR STYLING - PowerLine arrows with Nerd Fonts
+-- ═══════════════════════════════════════════════════════════════════════════════
+local SOLID_LEFT_ARROW = wezterm.nerdfonts.pl_left_hard_divider
+
+local function tab_title(tab_info)
+  local title = tab_info.tab_title
+  if title and #title > 0 then return title end
+  return tab_info.active_pane.title
+end
+
+wezterm.on('format-tab-title', function(tab, tabs, panes, config, hover, max_width)
+  -- Unseen output indicator
+  local has_unseen = false
+  for _, p in ipairs(tab.panes) do
+    if p.has_unseen_output then has_unseen = true; break end
+  end
+
+  local indicator = has_unseen and ' ●' or ''
+  local title = tab_title(tab)
+  title = wezterm.truncate_right(title, max_width - 4)
+
+  return ' ' .. (tab.tab_index + 1) .. ': ' .. title .. indicator .. ' '
+end)
+
+-- ═══════════════════════════════════════════════════════════════════════════════
+-- STATUS BAR - System info (right side of tab bar)
+-- ═══════════════════════════════════════════════════════════════════════════════
+wezterm.on('update-status', function(window, pane)
+  -- RIGHT: PowerLine segments (cwd, hostname, time, battery)
+  local cells = {}
+  local cwd_uri = pane:get_current_working_dir()
+  if cwd_uri then
+    local cwd = type(cwd_uri) == 'userdata' and cwd_uri.file_path or ''
+    -- Show only last 2 path components
+    cwd = cwd:gsub('^.*/(.-/[^/]+)$', '%1')
+    if cwd ~= '' then table.insert(cells, cwd) end
+  end
+  table.insert(cells, wezterm.hostname():gsub('%..*', ''))
+  table.insert(cells, wezterm.strftime('%H:%M'))
+  for _, b in ipairs(wezterm.battery_info()) do
+    table.insert(cells, string.format('%.0f%%', b.state_of_charge * 100))
+  end
+
+  -- Color gradient for segments (darker to lighter neon)
+  local seg_colors = { '#1a1540', '#222050', '#2a1a5a', '#331a6a' }
+  local text_fg = '#d7f7ff'
+  local elements = {}
+  for i, cell in ipairs(cells) do
+    local seg_bg = seg_colors[i] or seg_colors[#seg_colors]
+    table.insert(elements, { Foreground = { Color = seg_bg } })
+    table.insert(elements, { Background = { Color = i == 1 and '#090d1a' or seg_colors[i - 1] } })
+    table.insert(elements, { Text = SOLID_LEFT_ARROW })
+    table.insert(elements, { Background = { Color = seg_bg } })
+    table.insert(elements, { Foreground = { Color = text_fg } })
+    table.insert(elements, { Text = ' ' .. cell .. ' ' })
+  end
+  window:set_right_status(wezterm.format(elements))
+end)
 
 -- ═══════════════════════════════════════════════════════════════════════════════
 -- KEYBINDINGS
