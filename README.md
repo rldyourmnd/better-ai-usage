@@ -156,6 +156,21 @@ exec fish
 
 That's it! Your terminal is now optimized. 🎉
 
+### Starship Profiles (stable-max / ultra-max)
+
+After install, two prompt profiles are available:
+
+```bash
+# List available profiles
+starship-profile list
+
+# Switch to stable (high signal, lower noise)
+starship-profile stable-max
+
+# Switch to ultra (Jetpack++ rich mode)
+starship-profile ultra-max
+```
+
 ## 📦 Installation
 
 ### Option 1: Full Installation
@@ -333,7 +348,8 @@ better-terminal-usage/
 ├── 📋 CHANGELOG.md           # Version history
 ├── 📁 configs/               # Configuration files
 │   ├── fish/config.fish      # Fish shell config
-│   ├── starship/starship.toml # Starship prompt config
+│   ├── starship/starship.toml # Default Starship prompt config
+│   ├── starship/profiles/*.toml # stable-max + ultra-max profiles
 │   └── wezterm/wezterm.lua   # WezTerm terminal config
 ├── 📁 docs/                  # Documentation
 │   ├── layers/               # Layer-specific docs
@@ -341,6 +357,8 @@ better-terminal-usage/
 ├── 📁 scripts/               # Installation scripts
 │   ├── install.sh            # Main installer
 │   ├── install-foundation.sh # Foundation installer
+│   ├── install-nerd-fonts.sh # Installs Nerd Fonts for icons
+│   ├── starship/switch-profile.sh # Profile switcher utility
 │   └── install-layer-*.sh    # Layer installers
 └── 📁 context/               # Research & benchmarks
 ```

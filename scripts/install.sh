@@ -316,6 +316,18 @@ else
     log_info "Starship already installed"
 fi
 
+# Nerd Fonts for Starship/WezTerm icons
+if [ -x "scripts/install-nerd-fonts.sh" ]; then
+    log_info "Installing Nerd Fonts for prompt icons..."
+    if ./scripts/install-nerd-fonts.sh; then
+        log_success "Nerd Fonts installed"
+    else
+        log_warn "Nerd Fonts installation failed (continuing)"
+    fi
+else
+    log_warn "Nerd font installer script not found: scripts/install-nerd-fonts.sh"
+fi
+
 log_success "Foundation complete!"
 
 # ═══════════════════════════════════════════════════════════════════════════════
@@ -335,8 +347,13 @@ log_success "Fish config applied"
 
 # Copy Starship config
 mkdir -p ~/.config
+mkdir -p ~/.config/starship/profiles
+mkdir -p ~/.local/bin
 cp configs/starship/starship.toml ~/.config/starship.toml
-log_success "Starship config applied"
+cp configs/starship/profiles/*.toml ~/.config/starship/profiles/
+cp scripts/starship/switch-profile.sh ~/.local/bin/starship-profile
+chmod +x ~/.local/bin/starship-profile
+log_success "Starship config applied (default + profiles + switcher)"
 
 # ═══════════════════════════════════════════════════════════════════════════════
 # COMPLETE

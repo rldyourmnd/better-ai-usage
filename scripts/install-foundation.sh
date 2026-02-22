@@ -94,6 +94,18 @@ else
     log_info "Starship already installed"
 fi
 
+# Nerd Fonts for Starship/WezTerm icons
+if [ -x "$PROJECT_DIR/scripts/install-nerd-fonts.sh" ]; then
+    log_info "Installing Nerd Fonts for prompt icons..."
+    if "$PROJECT_DIR/scripts/install-nerd-fonts.sh"; then
+        log_success "Nerd Fonts installed"
+    else
+        log_warn "Nerd Fonts installation failed (continuing)"
+    fi
+else
+    log_warn "Nerd font installer script not found at $PROJECT_DIR/scripts/install-nerd-fonts.sh"
+fi
+
 # ═══════════════════════════════════════════════════════════════════════════════
 # CONFIGURATION
 # ═══════════════════════════════════════════════════════════════════════════════
@@ -102,6 +114,8 @@ log_info "Applying configurations..."
 # Create directories
 mkdir -p ~/.config/fish
 mkdir -p ~/.config
+mkdir -p ~/.config/starship/profiles
+mkdir -p ~/.local/bin
 
 # Copy WezTerm config
 if [ -f "$PROJECT_DIR/configs/wezterm/wezterm.lua" ]; then
@@ -128,7 +142,10 @@ if [ -f "$PROJECT_DIR/configs/starship/starship.toml" ]; then
         log_warn "Please fix the config file before proceeding"
     else
         cp "$PROJECT_DIR/configs/starship/starship.toml" ~/.config/starship.toml
-        log_success "Starship config applied"
+        cp "$PROJECT_DIR"/configs/starship/profiles/*.toml ~/.config/starship/profiles/
+        cp "$PROJECT_DIR/scripts/starship/switch-profile.sh" ~/.local/bin/starship-profile
+        chmod +x ~/.local/bin/starship-profile
+        log_success "Starship config applied (default + profiles + switcher)"
     fi
 else
     log_warn "Starship config not found at $PROJECT_DIR/configs/starship/starship.toml"
