@@ -1,5 +1,7 @@
 # Getting Started
 
+Canonical quick-start is maintained in `README.md` (`Quick Start` section). This page mirrors operator-focused steps for wiki users.
+
 ## Prerequisites
 
 - Git and curl available
