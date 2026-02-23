@@ -4,7 +4,7 @@ Captured from the current machine and intended as the canonical "current state" 
 
 ## Captured At
 
-- Timestamp: 2026-02-23T07:35:50+07:00
+- Timestamp: 2026-02-23T07:49:35+07:00
 - Host profile: Linux, NVIDIA RTX 2070, i7-8750H, 32GB RAM
 
 ## Rendering and Shell Profile
@@ -74,3 +74,10 @@ The following official docs were consulted through Context7 for configuration va
 - `scripts/health-check.sh` status: PASS (3 warnings)
 - Key warnings:
   - Config parity mismatches for three user template files
+
+## Wiki Publication Snapshot
+
+- GitHub Wiki publish status: SUCCESS
+- Published from repository source directory: `wiki/`
+- Publisher script: `scripts/publish-wiki.sh`
+- Wiki URL: `https://github.com/rldyourmnd/rld-better-terminal-ai-usage/wiki`
