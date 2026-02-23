@@ -156,7 +156,7 @@ if [ -f "$PROJECT_DIR/configs/starship/starship.toml" ]; then
     else
         cp "$PROJECT_DIR/configs/starship/starship.toml" ~/.config/starship.toml
         cp "$PROJECT_DIR"/configs/starship/profiles/*.toml ~/.config/starship/profiles/
-        cp "$PROJECT_DIR/scripts/starship/switch-profile.sh" ~/.local/bin/starship-profile
+        cp "$PROJECT_DIR/scripts/shared/starship/switch-profile.sh" ~/.local/bin/starship-profile
         chmod +x ~/.local/bin/starship-profile
         if command_exists starship-profile; then
             starship-profile ultra-max >/dev/null 2>&1 || log_warn "Failed to apply ultra-max profile automatically"

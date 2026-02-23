@@ -12,13 +12,10 @@ This directory is organized by operating system.
 
 - `scripts/install.sh` dispatches by OS.
 - `scripts/health-check.sh` dispatches by OS.
+- `scripts/install-macos.sh` and `scripts/health-check-macos.sh` are macOS wrappers.
+- `scripts/install-windows.ps1` and `scripts/health-check-windows.ps1` are Windows wrappers.
 
-## Compatibility Wrappers
+## Shared Helpers
 
-Legacy Linux entrypoints are preserved in `scripts/` and forward to `scripts/linux/*`:
-
-- `scripts/install-foundation.sh`
-- `scripts/install-layer-1.sh` ... `scripts/install-layer-5.sh`
-- `scripts/install-nerd-fonts.sh`
-
-Use canonical `scripts/linux/*` paths for new automation.
+- `scripts/shared/starship/switch-profile.sh`
+- `scripts/publish-wiki.sh`

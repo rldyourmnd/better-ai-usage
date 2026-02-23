@@ -406,18 +406,14 @@ run_fish_syntax
 log_info "Checking required files and permissions..."
 for script in \
     "$PROJECT_DIR/scripts/install.sh" \
+    "$PROJECT_DIR/scripts/publish-wiki.sh" \
     "$PROJECT_DIR/scripts/linux/install-foundation.sh" \
     "$PROJECT_DIR/scripts/linux/install-layer-1.sh" \
     "$PROJECT_DIR/scripts/linux/install-layer-2.sh" \
     "$PROJECT_DIR/scripts/linux/install-layer-3.sh" \
     "$PROJECT_DIR/scripts/linux/install-layer-4.sh" \
     "$PROJECT_DIR/scripts/linux/install-layer-5.sh" \
-    "$PROJECT_DIR/scripts/install-foundation.sh" \
-    "$PROJECT_DIR/scripts/install-layer-1.sh" \
-    "$PROJECT_DIR/scripts/install-layer-2.sh" \
-    "$PROJECT_DIR/scripts/install-layer-3.sh" \
-    "$PROJECT_DIR/scripts/install-layer-4.sh" \
-    "$PROJECT_DIR/scripts/install-layer-5.sh" \
+    "$PROJECT_DIR/scripts/linux/install-nerd-fonts.sh" \
     "$PROJECT_DIR/scripts/health-check.sh"; do
     check_file_presence "$script" "$script"
     check_executable "$script" "$script"

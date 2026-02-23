@@ -62,7 +62,7 @@ fi
 if [[ -f "$PROJECT_DIR/configs/starship/starship.toml" ]]; then
   cp "$PROJECT_DIR/configs/starship/starship.toml" "$HOME/.config/starship.toml"
   cp "$PROJECT_DIR"/configs/starship/profiles/*.toml "$HOME/.config/starship/profiles/"
-  cp "$PROJECT_DIR/scripts/starship/switch-profile.sh" "$HOME/.local/bin/starship-profile"
+  cp "$PROJECT_DIR/scripts/shared/starship/switch-profile.sh" "$HOME/.local/bin/starship-profile"
   chmod +x "$HOME/.local/bin/starship-profile"
   if "$HOME/.local/bin/starship-profile" ultra-max >/dev/null 2>&1; then
     log_success "Starship config applied with ultra-max profile"
