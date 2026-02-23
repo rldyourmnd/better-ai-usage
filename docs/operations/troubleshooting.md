@@ -51,11 +51,34 @@ cp configs/starship/starship.toml ~/.config/starship.toml
 
 Then re-open shell and rerun health-check.
 
-### 3) `semgrep` command fails with `PermissionError: .../.semgrep/semgrep.log`
+### 3) WezTerm spam logs: `while processing update-status event: runtime error`
 
 **Cause**
 
-Semgrep cannot write to its log file on this machine (known local issue).
+Lua callback in `update-status` fails repeatedly (commonly due to passing
+multi-return values like `string.gsub(...)` directly into `table.insert(...)`).
+
+**Fix**
+
+Sync local config from the repository:
+
+```bash
+cp configs/wezterm/wezterm.lua ~/.wezterm.lua
+```
+
+Reload WezTerm config (`Ctrl+Shift+R` by default) and validate:
+
+```bash
+journalctl --user -b --since '10 minutes ago' | rg "update-status event: runtime error"
+```
+
+### 4) `semgrep` command fails with `PermissionError: .../.semgrep/semgrep.log`
+
+**Cause**
+
+Either:
+- local Semgrep log path permissions are broken, or
+- command is executed in a restricted sandbox that blocks writes to `~/.semgrep`.
 
 **Fix**
 
@@ -63,6 +86,8 @@ Semgrep cannot write to its log file on this machine (known local issue).
 rm -f ~/.semgrep/semgrep.log
 mkdir -p ~/.semgrep
 chmod 700 ~/.semgrep
+touch ~/.semgrep/semgrep.log
+chmod 600 ~/.semgrep/semgrep.log
 ```
 
 Then run again:
@@ -71,6 +96,9 @@ Then run again:
 semgrep scan --config auto .  # for a quick validation
 ```
 
+If validation works in a normal shell but fails in a restricted automation
+runtime, treat it as an environment limitation (not a host issue).
+
 If issue persists, remove stale user-level Python package cache and reinstall:
 
 ```bash
@@ -78,7 +106,7 @@ python3 -m pip uninstall -y semgrep
 python3 -m pip install --user semgrep
 ```
 
-### 4) `gemini` command times out / hangs
+### 5) `gemini` command times out / hangs
 
 **Cause**
 
@@ -95,7 +123,7 @@ gemini
 
 - For non-interactive use, define `GEMINI_API_KEY`.
 
-### 5) `~/.local/bin` missing or not on `PATH`
+### 6) `~/.local/bin` missing or not on `PATH`
 
 **Cause**
 
@@ -114,7 +142,7 @@ fi
 
 Then restart shell.
 
-### 6) `curl` or GitHub API blocked
+### 7) `curl` or GitHub API blocked
 
 **Cause**
 
@@ -129,7 +157,7 @@ Corporate proxy/firewall limits release metadata fetch.
 CURL_CA_BUNDLE=/etc/ssl/certs/ca-certificates.crt ./scripts/linux/install-layer-3.sh
 ```
 
-### 7) `sg` exists but is not ast-grep
+### 8) `sg` exists but is not ast-grep
 
 **Cause**
 
@@ -141,6 +169,28 @@ Some Linux systems expose `sg` from `util-linux`, which is not `ast-grep`.
 ~/.cargo/bin/sg --version
 cargo install --locked ast-grep
 ./scripts/health-check.sh --strict --summary
+```
+
+### 9) `nvidia-smi` fails with `Failed to initialize NVML: Unknown Error`
+
+**Cause**
+
+`nvidia-persistenced` is inactive or NVML runtime path is in a degraded state.
+
+**Fix**
+
+Run recovery utility:
+
+```bash
+./scripts/linux/fix-nvidia-nvml.sh
+```
+
+Manual fallback:
+
+```bash
+sudo systemctl start nvidia-persistenced
+sudo systemctl add-wants multi-user.target nvidia-persistenced.service
+nvidia-smi
 ```
 
 ## Escalation Protocol

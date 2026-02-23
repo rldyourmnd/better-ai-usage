@@ -24,3 +24,4 @@ Repository docs are organized OS-first.
 - Health checks: `docs/operations/health-check.md`
 - Troubleshooting: `docs/operations/troubleshooting.md`
 - Upgrade and rollback: `docs/operations/upgrade-and-rollback.md`
+- Latest release note: `docs/operations/release-2.0.3.md`

@@ -53,7 +53,7 @@ macOS:
 - PATH integrity (`$HOME/.local/bin`)
 - Linux `ast-grep` runtime identity (ensures `sg` is ast-grep, not util-linux `sg`)
 - Known local runtime issues:
-  - `semgrep` permission errors (current known issue)
+  - `semgrep` permission errors (often environment/sandbox-dependent)
   - `gemini` non-responsive invocation on this machine
 - Tool inventory contract drift (terminal+tool catalog updates)
 - Installer script health (`git diff`-stable script files and executable bit)
@@ -81,3 +81,4 @@ If the check reports multiple failures, prioritize:
 1. Permission and environment issues (`PATH`, script syntax, command availability)
 2. Config mismatch and tool availability
 3. Optional/localized runtime issues (`semgrep`, `gemini`) listed in `troubleshooting.md`
+4. GPU/NVML recovery via `scripts/linux/fix-nvidia-nvml.sh` when `nvidia-smi` is unhealthy
