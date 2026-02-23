@@ -57,6 +57,29 @@ jobs:
             throw "PowerShell parsing failed for one or more scripts."
           }
 
+  macos-flow-smoke:
+    runs-on: macos-latest
+    name: macOS Flow Smoke
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Validate macOS installer flow (dry-run)
+        run: |
+          ./scripts/macos/install.sh --dry-run
+
+  windows-flow-smoke:
+    runs-on: windows-latest
+    name: Windows Flow Smoke
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Validate Windows installer flow (dry-run)
+        shell: pwsh
+        run: |
+          .\scripts\install-windows.ps1 -DryRun
+
   markdown-lint:
     runs-on: ubuntu-latest
     name: Markdown Linting
