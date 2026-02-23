@@ -1,13 +1,15 @@
 -- ═══════════════════════════════════════════════════════════════════════════════
--- WEZTERM CONFIGURATION - Multi-Monitor Stability for NVIDIA
+-- WEZTERM CONFIGURATION - Multi-Monitor Stability Profile
 -- ═══════════════════════════════════════════════════════════════════════════════
--- System: NVIDIA RTX 2070, X11 (Wayland disabled for multi-monitor stability)
--- Goal: GUARANTEED STABILITY for long-running AI sessions on multi-monitor setup
+-- Goal: Stability-first defaults for long-running AI sessions on multi-monitor setups
 -- Priority: Stability > Speed > Features
 --
--- KNOWN ISSUE FIXED: Crashing when moving window to second monitor
--- ROOT CAUSE: NVIDIA + Wayland + Multi-monitor = GPU context loss
--- SOLUTION: Disable Wayland, use X11 for stable multi-monitor support
+-- Runtime switches:
+--   WEZTERM_FORCE_X11=1       -> force X11/XWayland
+--   WEZTERM_FORCE_WAYLAND=1   -> force native Wayland
+--   WEZTERM_RENDERER=opengl|software|webgpu
+--   WEZTERM_SAFE_RENDERER=1   -> force Software renderer
+--   WEZTERM_MINIMAL_UI=1      -> low-overhead UI profile
 
 local wezterm = require 'wezterm'
 local config = wezterm.config_builder()
@@ -15,6 +17,15 @@ local target = wezterm.target_triple or ''
 local is_windows = target:find('windows') ~= nil
 local is_macos = target:find('apple%-darwin') ~= nil
 local is_linux = not is_windows and not is_macos
+
+local function env_truthy(name)
+  local value = os.getenv(name)
+  if not value then
+    return false
+  end
+  value = value:lower()
+  return value == '1' or value == 'true' or value == 'yes' or value == 'on'
+end
 
 -- ═══════════════════════════════════════════════════════════════════════════════
 -- GPU RENDERING - OpenGL for MAXIMUM STABILITY
@@ -24,20 +35,43 @@ local is_linux = not is_windows and not is_macos
 -- Emergency fallback:
 --   WEZTERM_SAFE_RENDERER=1 wezterm
 -- This keeps default behavior fast/stable while allowing one-command safe mode.
-local safe_renderer = os.getenv 'WEZTERM_SAFE_RENDERER' == '1'
-if safe_renderer then
+local safe_renderer = env_truthy 'WEZTERM_SAFE_RENDERER'
+local forced_renderer = (os.getenv 'WEZTERM_RENDERER' or ''):lower()
+if forced_renderer == 'software' then
+  config.front_end = 'Software'
+elseif forced_renderer == 'webgpu' then
+  config.front_end = 'WebGpu'
+elseif forced_renderer == 'opengl' then
+  config.front_end = 'OpenGL'
+elseif safe_renderer then
   config.front_end = 'Software'
 else
   config.front_end = 'OpenGL'
 end
 
 -- ═══════════════════════════════════════════════════════════════════════════════
--- WAYLAND - DISABLED for NVIDIA Multi-Monitor Stability
+-- WAYLAND/X11 SELECTION - SESSION AWARE WITH EXPLICIT OVERRIDES
 -- ═══════════════════════════════════════════════════════════════════════════════
--- CRITICAL: Different refresh rates across monitors cause GPU context loss
--- under Wayland. XWayland is stable for NVIDIA multi-monitor setups.
+-- Default behavior:
+--   * Wayland session -> native Wayland
+--   * X11 session     -> X11
+-- Override:
+--   WEZTERM_FORCE_X11=1
+--   WEZTERM_FORCE_WAYLAND=1
 if is_linux then
-  config.enable_wayland = false
+  local force_x11 = env_truthy 'WEZTERM_FORCE_X11'
+  local force_wayland = env_truthy 'WEZTERM_FORCE_WAYLAND'
+  if force_wayland and force_x11 then
+    config.enable_wayland = false
+  elseif force_x11 then
+    config.enable_wayland = false
+  elseif force_wayland then
+    config.enable_wayland = true
+  else
+    local session_type = (os.getenv 'XDG_SESSION_TYPE' or ''):lower()
+    local has_wayland_socket = os.getenv 'WAYLAND_DISPLAY' ~= nil
+    config.enable_wayland = session_type == 'wayland' or has_wayland_socket
+  end
 end
 
 -- FALLBACK: If OpenGL still causes issues, use Software rendering
@@ -61,21 +95,27 @@ config.default_gui_startup_args = { 'connect', 'unix' }
 -- ═══════════════════════════════════════════════════════════════════════════════
 -- RENDERING PERFORMANCE - Stable settings for multi-monitor
 -- ═══════════════════════════════════════════════════════════════════════════════
--- Conservative 60fps for multi-monitor stability (matches most monitor refresh)
-config.max_fps = 60
+local minimal_ui = env_truthy 'WEZTERM_MINIMAL_UI'
+
+-- Conservative fps for multi-monitor stability.
+-- Minimal UI mode can be enabled for compositor stress tests:
+--   WEZTERM_MINIMAL_UI=1 wezterm
+config.max_fps = minimal_ui and 45 or 60
 config.animation_fps = 1
 config.cursor_blink_rate = 0
 config.cursor_blink_ease_in = 'Constant'
 config.cursor_blink_ease_out = 'Constant'
 config.text_blink_rate = 0
 config.text_blink_rate_rapid = 0
+config.status_update_interval = minimal_ui and 5000 or 2000
 
 -- Disable ligatures for faster text rendering (STABLE optimization)
 -- AI tools stream massive amounts of code with symbols (=>, !=, ===)
 config.harfbuzz_features = { 'calt=0', 'clig=0', 'liga=0' }
 
--- Fancy tab bar: native close buttons, styled chrome via window_frame
-config.use_fancy_tab_bar = true
+-- Fancy tab bar: native close buttons, styled chrome via window_frame.
+-- Disabled in minimal UI mode to reduce compositor work.
+config.use_fancy_tab_bar = not minimal_ui
 
 -- Scrollback: lower memory pressure for long AI sessions while keeping deep history.
 config.scrollback_lines = 20000
@@ -243,17 +283,19 @@ config.window_frame = {
 -- ═══════════════════════════════════════════════════════════════════════════════
 -- BACKGROUND GRADIENT - Subtle vertical depth
 -- ═══════════════════════════════════════════════════════════════════════════════
-config.window_background_gradient = {
-  orientation = 'Vertical',
-  colors = { '#0b1020', '#0a0d1e', '#0d0820' },
-  interpolation = 'Linear',
-  blend = 'Rgb',
-}
+if not minimal_ui then
+  config.window_background_gradient = {
+    orientation = 'Vertical',
+    colors = { '#0b1020', '#0a0d1e', '#0d0820' },
+    interpolation = 'Linear',
+    blend = 'Rgb',
+  }
+end
 
 -- ═══════════════════════════════════════════════════════════════════════════════
 -- PANE FOCUS - Active pane pops, inactive fades
 -- ═══════════════════════════════════════════════════════════════════════════════
-config.inactive_pane_hsb = {
+config.inactive_pane_hsb = minimal_ui and { saturation = 1.0, brightness = 1.0 } or {
   saturation = 0.7,
   brightness = 0.6,
 }
@@ -292,6 +334,23 @@ config.quick_select_patterns = {
 -- TAB BAR STYLING - PowerLine arrows with Nerd Fonts
 -- ═══════════════════════════════════════════════════════════════════════════════
 local SOLID_LEFT_ARROW = wezterm.nerdfonts.pl_left_hard_divider
+local battery_cache_at = 0
+local battery_cache = {}
+
+local function get_battery_cells()
+  local now = os.time()
+  if now - battery_cache_at < 30 then
+    return battery_cache
+  end
+
+  local cells = {}
+  for _, b in ipairs(wezterm.battery_info()) do
+    table.insert(cells, string.format('%.0f%%', b.state_of_charge * 100))
+  end
+  battery_cache = cells
+  battery_cache_at = now
+  return battery_cache
+end
 
 local function tab_title(tab_info)
   local title = tab_info.tab_title
@@ -338,8 +397,8 @@ wezterm.on('update-status', function(window, pane)
   local hostname = wezterm.hostname():gsub('%..*', '')
   table.insert(cells, hostname)
   table.insert(cells, wezterm.strftime('%H:%M'))
-  for _, b in ipairs(wezterm.battery_info()) do
-    table.insert(cells, string.format('%.0f%%', b.state_of_charge * 100))
+  for _, battery in ipairs(get_battery_cells()) do
+    table.insert(cells, battery)
   end
 
   -- Color gradient for segments (darker to lighter neon)
