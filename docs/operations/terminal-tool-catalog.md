@@ -2,7 +2,7 @@
 
 This catalog is the Linux (Debian/Ubuntu) source of truth.
 For macOS, use `docs/platforms/macos/README.md`.
-Windows is currently a placeholder (`docs/platforms/windows/README.md`).
+For Windows, use `docs/platforms/windows/README.md`.
 The tables below define Linux layer expectations.
 
 ## Terminal Stack

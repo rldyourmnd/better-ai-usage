@@ -18,6 +18,8 @@ This repository is structured by operating systems.
 
 ## Windows
 
-- Status: placeholder
+- Status: production
 - Docs: `docs/platforms/windows/README.md`
-- Implementation: pending
+- Install (PowerShell): `.\scripts\install-windows.ps1`
+- Install (Git Bash/MSYS/Cygwin): `./scripts/install.sh` (auto-dispatch)
+- Health check (PowerShell): `.\scripts\health-check-windows.ps1 -Summary`

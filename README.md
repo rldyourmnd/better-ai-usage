@@ -7,7 +7,7 @@
 </p>
 
 <p align="center">
-  <strong>Production-ready terminal stack for Linux (Debian/Ubuntu) and macOS: WezTerm + Fish + Starship with a 5-layer AI-native toolchain.</strong>
+  <strong>Production-ready terminal stack for Linux (Debian/Ubuntu), macOS, and Windows: WezTerm + shell + Starship with a 5-layer AI-native toolchain.</strong>
 </p>
 
 <p align="center">
@@ -40,6 +40,7 @@
 <p align="center">
   <img src="https://img.shields.io/badge/platform-Linux_(Debian%2FUbuntu)-orange?style=flat-square&logo=linux" alt="Linux platform">
   <img src="https://img.shields.io/badge/platform-macOS-black?style=flat-square&logo=apple" alt="macOS platform">
+  <img src="https://img.shields.io/badge/platform-Windows-0078D6?style=flat-square&logo=windows" alt="Windows platform">
   <img src="https://img.shields.io/badge/shell-Fish-9C27B0?style=flat-square&logo=fish-shell" alt="Shell">
   <img src="https://img.shields.io/badge/terminal-WezTerm-00D8FF?style=flat-square" alt="Terminal">
   <img src="https://img.shields.io/badge/prompt-Starship-DD0B78?style=flat-square" alt="Prompt">
@@ -62,7 +63,7 @@
 |---|---|---|---|
 | Linux (Debian/Ubuntu) | Production | `docs/platforms/linux/README.md` | `./scripts/install.sh`, `./scripts/health-check.sh` |
 | macOS | Production | `docs/platforms/macos/README.md` | `./scripts/install.sh` or `./scripts/install-macos.sh`, `./scripts/health-check-macos.sh` |
-| Windows | Placeholder | `docs/platforms/windows/README.md` | Not implemented yet |
+| Windows | Production | `docs/platforms/windows/README.md` | `.\scripts\install-windows.ps1`, `.\scripts\health-check-windows.ps1` |
 
 ## 🚀 Quick Start
 
@@ -76,8 +77,17 @@ cd rld-better-terminal-ai-usage
 
 - Linux: runs Linux pipeline
 - macOS: delegates to `scripts/macos/install.sh`
+- Windows shell environments (`MINGW/MSYS/CYGWIN`): delegates to `scripts/install-windows.ps1`
 
-After setup:
+Windows PowerShell quick start:
+
+```powershell
+git clone https://github.com/rldyourmnd/rld-better-terminal-ai-usage.git
+cd rld-better-terminal-ai-usage
+.\scripts\install-windows.ps1
+```
+
+After setup (Linux/macOS):
 
 ```bash
 exec fish
@@ -141,11 +151,31 @@ macOS layer-by-layer:
 ./scripts/macos/install-layer-5.sh
 ```
 
-#### Windows (placeholder)
+#### Windows
 
-Windows implementation is not yet shipped. Track status in `docs/platforms/windows/README.md`.
+- Windows 10/11
+- WinGet available (`winget --version`)
+- PowerShell profile write access (`$PROFILE`)
+- Internet access
 
-### Layer model (Linux/macOS)
+Windows full install:
+
+```powershell
+.\scripts\install-windows.ps1
+```
+
+Windows layer-by-layer:
+
+```powershell
+.\scripts\windows\install-foundation.ps1
+.\scripts\windows\install-layer-1.ps1
+.\scripts\windows\install-layer-2.ps1
+.\scripts\windows\install-layer-3.ps1
+.\scripts\windows\install-layer-4.ps1
+.\scripts\windows\install-layer-5.ps1
+```
+
+### Layer model (Linux/macOS/Windows)
 
 | Layer | Script | Includes |
 |---|---|---|
@@ -160,6 +190,7 @@ Windows implementation is not yet shipped. Track status in `docs/platforms/windo
 
 - Linux catalog: [`docs/operations/terminal-tool-catalog.md`](docs/operations/terminal-tool-catalog.md)
 - macOS catalog and details: [`docs/platforms/macos/README.md`](docs/platforms/macos/README.md)
+- Windows catalog and details: [`docs/platforms/windows/README.md`](docs/platforms/windows/README.md)
 
 ## 🛠 Verification and Health checks
 
@@ -173,6 +204,12 @@ macOS:
 
 ```bash
 ./scripts/health-check-macos.sh --summary
+```
+
+Windows (PowerShell):
+
+```powershell
+.\scripts\health-check-windows.ps1 -Summary
 ```
 
 Checks include:
@@ -222,6 +259,7 @@ Layer 5: AI orchestration (claude, gemini, codex)
 rld-better-terminal-ai-usage/
 ├── scripts/
 │   ├── install.sh
+│   ├── install-windows.ps1
 │   ├── install-foundation.sh
 │   ├── install-layer-1.sh
 │   ├── install-layer-2.sh
@@ -231,7 +269,9 @@ rld-better-terminal-ai-usage/
 │   ├── health-check.sh
 │   ├── install-macos.sh
 │   ├── health-check-macos.sh
+│   ├── health-check-windows.ps1
 │   ├── macos/
+│   ├── windows/
 │   └── publish-wiki.sh
 ├── configs/
 │   ├── fish/config.fish

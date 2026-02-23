@@ -13,8 +13,12 @@ The stack is installed in deterministic order:
 
 ## Installer Entrypoints
 
-- Full path: `scripts/install.sh`
-- Per-layer path: `scripts/install-foundation.sh`, `scripts/install-layer-{1..5}.sh`
+- Linux full: `scripts/install.sh`
+- macOS full: `scripts/install.sh` or `scripts/install-macos.sh`
+- Windows full (PowerShell): `scripts/install-windows.ps1`
+- Linux per-layer: `scripts/install-foundation.sh`, `scripts/install-layer-{1..5}.sh`
+- macOS per-layer: `scripts/macos/install-foundation.sh`, `scripts/macos/install-layer-{1..5}.sh`
+- Windows per-layer: `scripts/windows/install-foundation.ps1`, `scripts/windows/install-layer-{1..5}.ps1`
 
 ## Layer Ownership
 
@@ -31,7 +35,10 @@ The stack is installed in deterministic order:
 
 - Scripts are designed for re-runs.
 - If one layer fails, fix the root cause and rerun only that layer.
-- Always run `scripts/health-check.sh --summary` after each fix.
+- Always run the platform health-check after each fix:
+  - Linux: `scripts/health-check.sh --summary`
+  - macOS: `scripts/health-check-macos.sh --summary`
+  - Windows: `scripts/health-check-windows.ps1 -Summary`
 
 ## References
 

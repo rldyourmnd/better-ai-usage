@@ -7,6 +7,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- Added production-ready Windows implementation with layered PowerShell installers and health-check:
+  - `scripts/windows/install.ps1`
+  - `scripts/windows/install-foundation.ps1`
+  - `scripts/windows/install-layer-{1..5}.ps1`
+  - `scripts/windows/health-check.ps1`
+  - Shared helper module: `scripts/windows/common.ps1`
+- Added Windows wrapper entrypoints:
+  - `scripts/install-windows.ps1`
+  - `scripts/health-check-windows.ps1`
+- Added CI PowerShell parse validation job on `windows-latest`.
+
+### Changed
+- Root `scripts/install.sh` now detects Windows-like shell environments (`MINGW/MSYS/CYGWIN`) and delegates to PowerShell Windows installer.
+- Root `scripts/health-check.sh` now delegates to Windows PowerShell health-check with flag translation (`--summary`/`--strict`).
+- `configs/wezterm/wezterm.lua` is now OS-aware:
+  - Windows defaults to `pwsh.exe`/`powershell.exe`
+  - Unix-specific Wayland and unix-domain settings are guarded away from Windows.
+- `README.md`, platform docs, wiki platform pages, and operations health-check docs now mark Windows as production-ready.
+
 ## [1.3.0] - 2026-02-23
 
 ### Added

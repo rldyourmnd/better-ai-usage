@@ -5,6 +5,7 @@ install scripts.
 
 Linux uses `scripts/health-check.sh`.
 macOS uses `scripts/macos/health-check.sh` (or wrapper `scripts/health-check-macos.sh`).
+Windows uses `scripts/windows/health-check.ps1` (or wrapper `scripts/health-check-windows.ps1`).
 
 ## Quick Command
 
@@ -18,14 +19,23 @@ Strict CI-style validation:
 ./scripts/health-check.sh --strict
 ```
 
+PowerShell (Windows):
+
+```powershell
+.\scripts\health-check-windows.ps1 -Summary
+.\scripts\health-check-windows.ps1 -Strict
+```
+
 ## What the Health Check Validates
 
 - Bash script syntax (`bash -n scripts/*.sh`)
+- PowerShell script parse validation (`*.ps1` under `scripts/`)
 - Fish config syntax (`fish -n configs/fish/config.fish`)
 - Mandatory config files and parity checks:
   - `~/.wezterm.lua` vs `configs/wezterm/wezterm.lua`
-  - `~/.config/fish/config.fish` vs `configs/fish/config.fish`
   - `~/.config/starship.toml` vs `configs/starship/starship.toml`
+- Linux/macOS-only:
+  - `~/.config/fish/config.fish` vs `configs/fish/config.fish`
 - Required tools installation
 - PATH integrity (`$HOME/.local/bin`)
 - Known local runtime issues:
