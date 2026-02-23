@@ -16,6 +16,6 @@ This release was fully validated on:
 
 If you encounter platform-specific issues, please open an issue:
 
-- https://github.com/rldyourmnd/awesome-terminal-for-ai/issues
+- [GitHub Issues](https://github.com/rldyourmnd/awesome-terminal-for-ai/issues)
 
 I will prioritize fixes based on incoming reports.
