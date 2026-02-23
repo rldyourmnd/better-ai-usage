@@ -10,6 +10,36 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - _No notable changes yet._
 
+## [2.0.3] - 2026-02-23
+
+### Added
+- Added Linux runtime recovery utility:
+  - `scripts/linux/fix-nvidia-nvml.sh`
+  - recovers common `nvidia-smi` / NVML failures by starting `nvidia-persistenced`,
+    with optional boot registration via `systemctl add-wants`.
+
+### Changed
+- Refined operations documentation to match real-world incidents and recovery flow:
+  - `docs/operations/troubleshooting.md`
+  - `docs/operations/health-check.md`
+  - `docs/platforms/linux/README.md`
+  - `scripts/README.md`
+  - `scripts/linux/README.md`
+
+### Fixed
+- Documented and operationalized fix path for WezTerm `update-status` runtime error storms.
+- Stabilized local system runtime by ensuring `nvidia-persistenced` is active and pulled by `multi-user.target`.
+
+### Verified
+- System-first validation completed before release cut:
+  - `nvidia-smi` and NVML operational,
+  - terminal logs clean after WezTerm callback fix,
+  - no terminal-related OOM events in the last 24h audit.
+- Fully tested on Ubuntu 25.10.
+- Fully tested on Ubuntu 24.04 LTS.
+- macOS and Windows were not tested in this release cycle.
+- If you encounter platform-specific issues, please open a GitHub issue and I will prioritize fixes.
+
 ## [2.0.2] - 2026-02-23
 
 ### Fixed
@@ -211,7 +241,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-[Unreleased]: https://github.com/rldyourmnd/awesome-terminal-for-ai/compare/v2.0.2...HEAD
+[Unreleased]: https://github.com/rldyourmnd/awesome-terminal-for-ai/compare/v2.0.3...HEAD
+[2.0.3]: https://github.com/rldyourmnd/awesome-terminal-for-ai/releases/tag/v2.0.3
 [2.0.2]: https://github.com/rldyourmnd/awesome-terminal-for-ai/releases/tag/v2.0.2
 [2.0.1]: https://github.com/rldyourmnd/awesome-terminal-for-ai/releases/tag/v2.0.1
 [2.0.0]: https://github.com/rldyourmnd/awesome-terminal-for-ai/releases/tag/v2.0.0
