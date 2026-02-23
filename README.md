@@ -120,10 +120,12 @@ wiki/                              # wiki source (published via script)
 
 ## Documentation and Wiki
 
+- Docs index: [`docs/README.md`](docs/README.md)
 - Platform docs: [`docs/platforms/`](docs/platforms/)
 - Operations runbooks: [`docs/operations/`](docs/operations/)
 - Wiki source: [`wiki/`](wiki/)
 - Wiki publish: `./scripts/publish-wiki.sh`
+  - requires `gh` installed and authenticated (`gh auth status`)
 
 ## Compatibility Notes
 
