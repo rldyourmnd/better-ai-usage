@@ -10,6 +10,40 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - _No notable changes yet._
 
+## [2.0.4] - 2026-02-24
+
+### Added
+- Added Linux runtime-display overrides in WezTerm config:
+  - `WEZTERM_FORCE_WAYLAND=1`
+  - `WEZTERM_FORCE_X11=1`
+  - `WEZTERM_RENDERER=opengl|software|webgpu`
+  - `WEZTERM_MINIMAL_UI=1`
+- Added health-check runtime journal diagnostics for terminal freeze patterns:
+  - GNOME/Mutter compositor signals (`size change accounting`, `frame counter`, `MetaShapedTexture`)
+  - WezTerm runtime signals (`update-status` runtime error, mux broken pipe)
+- Added release runbook:
+  - `docs/operations/release-2.0.4.md`
+
+### Changed
+- Updated `configs/wezterm/wezterm.lua` to use session-aware Linux display protocol selection:
+  - Wayland session defaults to native Wayland
+  - X11 session defaults to X11/XWayland
+- Reduced status-bar callback pressure:
+  - set `status_update_interval` to a safer cadence
+  - added battery cache in `update-status` callback
+- Added minimal UI mode behavior to lower compositor load during resize stress testing.
+- Synchronized documentation and wiki for new runtime control model and incident workflow.
+
+### Fixed
+- Mitigated resize/move freeze regressions by replacing hardcoded Linux `enable_wayland=false`
+  with explicit session-aware behavior and deterministic override flags.
+- Improved operational visibility: health-check now surfaces compositor/runtime warning signatures
+  earlier instead of requiring manual log triage.
+
+### Verified
+- Runtime diagnostics validated against real incident log signatures from `journalctl --user -b`.
+- Script syntax validated for updated shell scripts.
+
 ## [2.0.3] - 2026-02-23
 
 ### Added
@@ -241,7 +275,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-[Unreleased]: https://github.com/rldyourmnd/awesome-terminal-for-ai/compare/v2.0.3...HEAD
+[Unreleased]: https://github.com/rldyourmnd/awesome-terminal-for-ai/compare/v2.0.4...HEAD
+[2.0.4]: https://github.com/rldyourmnd/awesome-terminal-for-ai/releases/tag/v2.0.4
 [2.0.3]: https://github.com/rldyourmnd/awesome-terminal-for-ai/releases/tag/v2.0.3
 [2.0.2]: https://github.com/rldyourmnd/awesome-terminal-for-ai/releases/tag/v2.0.2
 [2.0.1]: https://github.com/rldyourmnd/awesome-terminal-for-ai/releases/tag/v2.0.1
