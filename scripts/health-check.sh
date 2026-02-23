@@ -367,6 +367,63 @@ check_gemini_runtime() {
     fi
 }
 
+check_terminal_runtime_logs() {
+    if ! command_exists journalctl; then
+        log_warn "journalctl command not found; skipping runtime log diagnostics"
+        return
+    fi
+
+    if ! command_exists rg; then
+        log_warn "rg command not found; skipping runtime log diagnostics"
+        return
+    fi
+
+    local since_window="20 minutes ago"
+    local user_logs status
+
+    set +e
+    user_logs=$(journalctl --user -b --since "$since_window" --no-pager 2>/dev/null)
+    status=$?
+    set -e
+
+    if [[ $status -ne 0 ]]; then
+        log_warn "Unable to read user journal for runtime diagnostics"
+        return
+    fi
+
+    if [[ -z "$user_logs" ]]; then
+        log_warn "User journal returned no entries for runtime diagnostics window"
+        return
+    fi
+
+    local gnome_patterns='Error in size change accounting|Frame has assigned frame counter but no frame drawn time|MetaShapedTexture|needs an allocation'
+    local wezterm_patterns='while processing update-status event: runtime error|wezterm_mux_server_impl::local > writing pdu data buffer: Broken pipe'
+    local gnome_hits wezterm_hits
+
+    gnome_hits=$(rg -n "$gnome_patterns" <<<"$user_logs" | tail -n 12 || true)
+    wezterm_hits=$(rg -n "$wezterm_patterns" <<<"$user_logs" | tail -n 12 || true)
+
+    if [[ -n "$gnome_hits" ]]; then
+        log_warn "GNOME compositor freeze signatures detected in recent user journal"
+        if [[ "$VERBOSE" == true ]]; then
+            echo "$gnome_hits" | sed 's/^/      /'
+            echo "      Suggestion: WEZTERM_MINIMAL_UI=1 WEZTERM_FORCE_WAYLAND=1 wezterm start --always-new-process"
+        fi
+    else
+        log_ok "No GNOME compositor freeze signatures in recent user journal"
+    fi
+
+    if [[ -n "$wezterm_hits" ]]; then
+        log_warn "WezTerm runtime warning signatures detected in recent user journal"
+        if [[ "$VERBOSE" == true ]]; then
+            echo "$wezterm_hits" | sed 's/^/      /'
+            echo "      Suggestion: WEZTERM_SAFE_RENDERER=1 wezterm start --always-new-process"
+        fi
+    else
+        log_ok "No WezTerm runtime warning signatures in recent user journal"
+    fi
+}
+
 check_local_path_health() {
     log_info "Checking ~/.local/bin path..."
     if [[ -d "$HOME/.local/bin" ]]; then
@@ -460,6 +517,7 @@ check_version_or_status "codex" "expected codex cli version" codex --version
 
 check_semgrep_runtime
 check_gemini_runtime
+check_terminal_runtime_logs
 
 check_dir_presence "$HOME/.local/bin" ".local/bin directory"
 
