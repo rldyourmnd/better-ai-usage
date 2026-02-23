@@ -1,7 +1,9 @@
 # Terminal & Tools Catalog
 
-This repository provides a production-focused terminal stack for Debian/Ubuntu.
-The tables below are the source of truth for what is expected in each layer.
+This catalog is the Linux (Debian/Ubuntu) source of truth.
+For macOS, use `docs/platforms/macos/README.md`.
+Windows is currently a placeholder (`docs/platforms/windows/README.md`).
+The tables below define Linux layer expectations.
 
 ## Terminal Stack
 

@@ -3,6 +3,9 @@
 Run this whenever the environment is provisioned, upgraded, or after changing
 install scripts.
 
+Linux uses `scripts/health-check.sh`.
+macOS uses `scripts/macos/health-check.sh` (or wrapper `scripts/health-check-macos.sh`).
+
 ## Quick Command
 
 ```bash

@@ -16,6 +16,7 @@ This wiki is the operational knowledge base for the `rld-better-terminal-ai-usag
 
 ## Core Navigation
 
+- [Platform Guide](Platform-Guide)
 - [Architecture](Architecture)
 - [Tool Catalog](Tool-Catalog)
 - [Troubleshooting](Troubleshooting)

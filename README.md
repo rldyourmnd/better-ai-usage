@@ -7,7 +7,7 @@
 </p>
 
 <p align="center">
-  <strong>Production-ready Linux terminal stack: WezTerm + Fish + Starship with a 5-layer AI-native toolchain.</strong>
+  <strong>Production-ready terminal stack for Linux (Debian/Ubuntu) and macOS: WezTerm + Fish + Starship with a 5-layer AI-native toolchain.</strong>
 </p>
 
 <p align="center">
@@ -38,7 +38,8 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/platform-Linux-orange?style=flat-square&logo=linux" alt="Platform">
+  <img src="https://img.shields.io/badge/platform-Linux_(Debian%2FUbuntu)-orange?style=flat-square&logo=linux" alt="Linux platform">
+  <img src="https://img.shields.io/badge/platform-macOS-black?style=flat-square&logo=apple" alt="macOS platform">
   <img src="https://img.shields.io/badge/shell-Fish-9C27B0?style=flat-square&logo=fish-shell" alt="Shell">
   <img src="https://img.shields.io/badge/terminal-WezTerm-00D8FF?style=flat-square" alt="Terminal">
   <img src="https://img.shields.io/badge/prompt-Starship-DD0B78?style=flat-square" alt="Prompt">
@@ -48,12 +49,20 @@
 
 ## ✅ What this repository is
 
-`rld-better-terminal-ai-usage` is a production-oriented terminal bootstrap for Debian/Ubuntu that provides:
+`rld-better-terminal-ai-usage` is a production-oriented terminal bootstrap organized by operating systems:
 
 - WezTerm + Fish + Starship base environment.
 - Layered CLI tooling split into 5 isolated install layers.
 - Reproducible verification and troubleshooting workflow.
 - User-agnostic scripts (no hardcoded `/home/<user>` in install/config logic).
+
+## 🧭 Platform Layout
+
+| OS | Status | Docs | Entrypoints |
+|---|---|---|---|
+| Linux (Debian/Ubuntu) | Production | `docs/platforms/linux/README.md` | `./scripts/install.sh`, `./scripts/health-check.sh` |
+| macOS | Production | `docs/platforms/macos/README.md` | `./scripts/install.sh` or `./scripts/install-macos.sh`, `./scripts/health-check-macos.sh` |
+| Windows | Placeholder | `docs/platforms/windows/README.md` | Not implemented yet |
 
 ## 🚀 Quick Start
 
@@ -63,6 +72,11 @@ cd rld-better-terminal-ai-usage
 ./scripts/install.sh
 ```
 
+`install.sh` auto-detects OS:
+
+- Linux: runs Linux pipeline
+- macOS: delegates to `scripts/macos/install.sh`
+
 After setup:
 
 ```bash
@@ -71,7 +85,9 @@ exec fish
 
 ## 🧩 Installation
 
-### Requirements
+### Platform-specific setup
+
+#### Linux (Debian/Ubuntu)
 
 - Ubuntu/Debian (apt-based)
 - `curl` and `git` (required by installer scripts)
@@ -79,24 +95,13 @@ exec fish
 - Internet access
 - `amd64` or `arm64` Linux (multi-arch installer fallbacks are handled automatically)
 
-### Full install (recommended)
+Linux full install:
 
 ```bash
 ./scripts/install.sh
 ```
 
-`install.sh` runs these layers in this order:
-
-- `scripts/install-foundation.sh`
-- `scripts/install-layer-1.sh`
-- `scripts/install-layer-2.sh`
-- `scripts/install-layer-3.sh`
-- `scripts/install-layer-4.sh`
-- `scripts/install-layer-5.sh`
-
-Use this deterministic sequence if you want checkpointed output per layer.
-
-### Layer-by-layer install
+Linux layer-by-layer:
 
 ```bash
 ./scripts/install-foundation.sh
@@ -107,7 +112,40 @@ Use this deterministic sequence if you want checkpointed output per layer.
 ./scripts/install-layer-5.sh
 ```
 
-### Installed content by layer
+#### macOS
+
+- macOS 13+ recommended
+- `curl` and `git`
+- Internet access
+
+macOS full install:
+
+```bash
+./scripts/install-macos.sh
+```
+
+or via auto-detect:
+
+```bash
+./scripts/install.sh
+```
+
+macOS layer-by-layer:
+
+```bash
+./scripts/macos/install-foundation.sh
+./scripts/macos/install-layer-1.sh
+./scripts/macos/install-layer-2.sh
+./scripts/macos/install-layer-3.sh
+./scripts/macos/install-layer-4.sh
+./scripts/macos/install-layer-5.sh
+```
+
+#### Windows (placeholder)
+
+Windows implementation is not yet shipped. Track status in `docs/platforms/windows/README.md`.
+
+### Layer model (Linux/macOS)
 
 | Layer | Script | Includes |
 |---|---|---|
@@ -120,7 +158,8 @@ Use this deterministic sequence if you want checkpointed output per layer.
 
 ## 🧰 Terminal & Tools Catalog
 
-[`docs/operations/terminal-tool-catalog.md`](docs/operations/terminal-tool-catalog.md) is the authoritative inventory for all terminals and tools used by this repo, including expected binaries, install source, and health checks.
+- Linux catalog: [`docs/operations/terminal-tool-catalog.md`](docs/operations/terminal-tool-catalog.md)
+- macOS catalog and details: [`docs/platforms/macos/README.md`](docs/platforms/macos/README.md)
 
 ## 🛠 Verification and Health checks
 
@@ -128,6 +167,12 @@ Run the built-in health-check before and after changes:
 
 ```bash
 ./scripts/health-check.sh
+```
+
+macOS:
+
+```bash
+./scripts/health-check-macos.sh --summary
 ```
 
 Checks include:
@@ -165,6 +210,7 @@ Layer 5: AI orchestration (claude, gemini, codex)
 - `docs/operations/terminal-tool-catalog.md` – terminal and layer tool matrix
 - `docs/operations/troubleshooting.md` – known issues and recovery steps
 - `docs/operations/upgrade-and-rollback.md` – controlled upgrade strategy
+- `docs/platforms/` – OS-organized guides (`linux`, `macos`, `windows`)
 - `wiki/` – GitHub Wiki source pages (Home, sidebar, runbooks)
 - `scripts/publish-wiki.sh` – publish `wiki/` to GitHub Wiki via `gh`
 - `docs/layers/*.md` – per-layer installation and command usage
@@ -183,6 +229,9 @@ rld-better-terminal-ai-usage/
 │   ├── install-layer-4.sh
 │   ├── install-layer-5.sh
 │   ├── health-check.sh
+│   ├── install-macos.sh
+│   ├── health-check-macos.sh
+│   ├── macos/
 │   └── publish-wiki.sh
 ├── configs/
 │   ├── fish/config.fish
@@ -191,7 +240,8 @@ rld-better-terminal-ai-usage/
 ├── docs/
 │   ├── foundation/
 │   ├── layers/
-│   └── operations/
+│   ├── operations/
+│   └── platforms/
 ├── wiki/
 ├── context/
 └── CHANGELOG.md
