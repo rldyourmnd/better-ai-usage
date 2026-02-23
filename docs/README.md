@@ -2,6 +2,11 @@
 
 Repository docs are organized OS-first.
 
+## Canonical Start
+
+- Project overview and quick start: `README.md`
+- Operational wiki entrypoint: `wiki/Home.md`
+
 ## Platforms
 
 - Linux: `docs/platforms/linux/README.md`
