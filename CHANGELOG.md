@@ -11,6 +11,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Removed user-specific hardcoded paths from Fish, WezTerm, and Starship config templates so installs work on any Linux user account.
 - Switched Layer 1 `yq` install to user-local execution to reduce privileged-write failures on mixed environments.
 - Main installer now reuses layer scripts end-to-end instead of maintaining duplicate install logic.
+- Added production operations documentation set (`docs/operations/*`) and a full repository health-check script.
+- Added live config parity and runtime anomaly validation (`context/system-state.md`, `context/script-validation.md`).
+- Added architecture-aware manual install examples in Layer 3/4 docs (`layer-3-github.md`, `layer-4-code-intelligence.md`).
+- Added authoritative tool inventory in operations docs (`docs/operations/terminal-tool-catalog.md`).
+- Reordered `scripts/install.sh` to match documented installation order (Foundation first, then Layer 1-5).
+- Expanded `scripts/health-check.sh` validation to include `tokei` and refreshed context run artifacts.
+- Expanded `scripts/health-check.sh` parity/command checks by adding `grepai` and fixed `--summary`/`--strict` exit behavior in non-verbose mode.
+- Expanded `scripts/health-check.sh` tool validation with `glow` to align with Layer 2 inventory.
+- Updated `README` and `context/*` state snapshots with fresh validation baseline and diagnostics.
 
 ### Planned for 1.2.0
 - Terminal UI layer (window/chrome-level UI improvements beyond prompt)

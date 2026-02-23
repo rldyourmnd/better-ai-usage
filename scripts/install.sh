@@ -54,12 +54,12 @@ done
 log_success "Preflight checks passed"
 log_info "Starting full installation pipeline"
 
+run_step "$PROJECT_DIR/scripts/install-foundation.sh"
 run_step "$PROJECT_DIR/scripts/install-layer-1.sh"
 run_step "$PROJECT_DIR/scripts/install-layer-2.sh"
 run_step "$PROJECT_DIR/scripts/install-layer-3.sh"
 run_step "$PROJECT_DIR/scripts/install-layer-4.sh"
 run_step "$PROJECT_DIR/scripts/install-layer-5.sh"
-run_step "$PROJECT_DIR/scripts/install-foundation.sh"
 
 echo ""
 echo -e "${GREEN}════════════════════════════════════════════════════════════${NC}"
