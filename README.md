@@ -18,7 +18,8 @@
   <a href="#-architecture">Architecture</a> •
   <a href="#-operations">Operations</a> •
   <a href="#-troubleshooting">Troubleshooting</a> •
-  <a href="#-contributing">Contributing</a>
+  <a href="#-contributing">Contributing</a> •
+  <a href="https://github.com/rldyourmnd/rld-better-terminal-ai-usage/wiki">Wiki</a>
 </p>
 
 <p align="center">
@@ -164,6 +165,8 @@ Layer 5: AI orchestration (claude, gemini, codex)
 - `docs/operations/terminal-tool-catalog.md` – terminal and layer tool matrix
 - `docs/operations/troubleshooting.md` – known issues and recovery steps
 - `docs/operations/upgrade-and-rollback.md` – controlled upgrade strategy
+- `wiki/` – GitHub Wiki source pages (Home, sidebar, runbooks)
+- `scripts/publish-wiki.sh` – publish `wiki/` to GitHub Wiki via `gh`
 - `docs/layers/*.md` – per-layer installation and command usage
 - `context/` – research and reference snapshots
 
@@ -179,7 +182,8 @@ rld-better-terminal-ai-usage/
 │   ├── install-layer-3.sh
 │   ├── install-layer-4.sh
 │   ├── install-layer-5.sh
-│   └── health-check.sh
+│   ├── health-check.sh
+│   └── publish-wiki.sh
 ├── configs/
 │   ├── fish/config.fish
 │   ├── wezterm/wezterm.lua
@@ -188,6 +192,7 @@ rld-better-terminal-ai-usage/
 │   ├── foundation/
 │   ├── layers/
 │   └── operations/
+├── wiki/
 ├── context/
 └── CHANGELOG.md
 ```
