@@ -8,7 +8,30 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "$SCRIPT_DIR/common.sh"
 
 ensure_macos
-ensure_brew
+
+DRY_RUN=false
+for arg in "$@"; do
+  case "$arg" in
+    --dry-run)
+      DRY_RUN=true
+      ;;
+    --help|-h)
+      echo "Usage: $0 [--dry-run]"
+      exit 0
+      ;;
+    *)
+      echo "Unknown option: $arg"
+      echo "Usage: $0 [--dry-run]"
+      exit 1
+      ;;
+  esac
+done
+
+if [[ "$DRY_RUN" == false ]]; then
+  ensure_brew
+else
+  log_info "Dry-run mode: skipping Homebrew checks and package installation"
+fi
 
 run_step() {
   local script_path="$1"
@@ -21,6 +44,11 @@ run_step() {
   fi
 
   log_info "Running $script_name..."
+  if [[ "$DRY_RUN" == true ]]; then
+    log_info "[dry-run] would execute: $script_path"
+    return 0
+  fi
+
   "$script_path"
   log_success "$script_name complete"
 }
@@ -38,6 +66,12 @@ run_step "$SCRIPT_DIR/install-layer-2.sh"
 run_step "$SCRIPT_DIR/install-layer-3.sh"
 run_step "$SCRIPT_DIR/install-layer-4.sh"
 run_step "$SCRIPT_DIR/install-layer-5.sh"
+
+if [[ "$DRY_RUN" == true ]]; then
+  echo ""
+  echo -e "${GREEN}Dry-run flow validation PASS${NC}"
+  exit 0
+fi
 
 echo ""
 echo -e "${GREEN}════════════════════════════════════════════════════════════${NC}"

@@ -62,11 +62,11 @@ log_fail() {
 
 check_command() {
   local cmd="$1"
-  local version_cmd="$2"
+  shift
 
   if command_exists "$cmd"; then
     local out
-    out="$($version_cmd 2>/dev/null | head -1 || true)"
+    out="$("$cmd" "$@" 2>/dev/null | head -1 || true)"
     if [[ -n "$out" ]]; then
       log_ok "$cmd: $out"
     else
@@ -126,63 +126,63 @@ else
   log_fail "brew missing"
 fi
 
-check_command wezterm "wezterm --version"
-check_command fish "fish --version"
-check_command starship "starship --version"
+check_command wezterm --version
+check_command fish --version
+check_command starship --version
 
 # Layer 1
-check_command bat "bat --version"
-check_command fd "fd --version"
-check_command rg "rg --version"
-check_command sd "sd --version"
-check_command jq "jq --version"
-check_command yq "yq --version"
-check_command eza "eza --version"
+check_command bat --version
+check_command fd --version
+check_command rg --version
+check_command sd --version
+check_command jq --version
+check_command yq --version
+check_command eza --version
 
 # Layer 2
-check_command fzf "fzf --version"
-check_command zoxide "zoxide --version"
-check_command atuin "atuin --version"
-check_command uv "uv --version"
-check_command bun "bun --version"
-check_command watchexec "watchexec --version"
-check_command glow "glow --version"
-check_command btm "btm --version"
-check_command hyperfine "hyperfine --version"
+check_command fzf --version
+check_command zoxide --version
+check_command atuin --version
+check_command uv --version
+check_command bun --version
+check_command watchexec --version
+check_command glow --version
+check_command btm --version
+check_command hyperfine --version
 
 # Layer 3
-check_command gh "gh --version"
-check_command lazygit "lazygit --version"
-check_command delta "delta --version"
+check_command gh --version
+check_command lazygit --version
+check_command delta --version
 
 # Layer 4
-check_command ctags "ctags --version"
-check_command tokei "tokei --version"
+check_command ctags --version
+check_command tokei --version
 if command_exists sg; then
-  check_command sg "sg --version"
+  check_command sg --version
 elif command_exists ast-grep; then
-  check_command ast-grep "ast-grep --version"
+  check_command ast-grep --version
 else
   log_fail "ast-grep/sg missing"
 fi
-check_command probe "probe --version"
-check_command semgrep "semgrep --version"
+check_command probe --version
+check_command semgrep --version
 if command_exists grepai; then
   if grepai version >/dev/null 2>&1; then
-    check_command grepai "grepai version"
+    check_command grepai version
   else
-    check_command grepai "grepai --version"
+    check_command grepai --version
   fi
 else
   log_fail "grepai missing"
 fi
 
 # Layer 5
-check_command node "node --version"
-check_command npm "npm --version"
-check_command claude "claude --version"
-check_command gemini "gemini --version"
-check_command codex "codex --version"
+check_command node --version
+check_command npm --version
+check_command claude --version
+check_command gemini --version
+check_command codex --version
 
 check_file_parity "$HOME/.wezterm.lua" "$PROJECT_DIR/configs/wezterm/wezterm.lua" "WezTerm config"
 check_file_parity "$HOME/.config/fish/config.fish" "$PROJECT_DIR/configs/fish/config.fish" "Fish config"

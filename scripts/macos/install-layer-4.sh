@@ -23,7 +23,7 @@ install_formulae universal-ctags tokei ast-grep semgrep
 if ! command_exists probe; then
   ensure_cargo
   log_info "Installing probe via cargo (probe-code)..."
-  cargo install probe-code
+  cargo install --locked probe-code
   log_success "probe installed"
 else
   log_info "probe already installed"
