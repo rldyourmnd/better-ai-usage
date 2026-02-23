@@ -163,6 +163,7 @@ config.enable_scroll_bar = false
 config.window_decorations = 'TITLE | RESIZE'
 config.window_background_opacity = 1.0  -- NO transparency = better multi-monitor stability
 config.hide_tab_bar_if_only_one_tab = false
+config.tab_bar_at_bottom = true
 config.show_new_tab_button_in_tab_bar = true
 config.tab_max_width = 32
 config.window_padding = {
@@ -300,6 +301,14 @@ end)
 -- STATUS BAR - System info (right side of tab bar)
 -- ═══════════════════════════════════════════════════════════════════════════════
 wezterm.on('update-status', function(window, pane)
+  -- LEFT: static neon signature
+  window:set_left_status(wezterm.format {
+    { Background = { Color = '#090d1a' } },
+    { Foreground = { Color = '#ff2d95' } },
+    { Attribute = { Intensity = 'Bold' } },
+    { Text = ' rldyourmnd ' },
+  })
+
   -- RIGHT: PowerLine segments (cwd, hostname, time, battery)
   local cells = {}
   local cwd_uri = pane:get_current_working_dir()
