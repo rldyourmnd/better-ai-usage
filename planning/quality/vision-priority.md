@@ -26,5 +26,7 @@
 
 ## Feature Baseline
 - OS: Linux (Ubuntu/deb) and macOS.
-- Shell compatibility: fish/Starship by default with opt-in auto-init.
+- Shell baseline: fish + Starship by default with opt-in auto-init.
+- Shell fallback path: zsh fallback is allowed; bash is not a default v1.0 target on Linux/macOS.
+- Compatibility contract: ANSI/terminal baseline behavior first (colors, cursor, clear/redraw, scroll/paste stability), with controlled degradation for rare legacy extensions.
 - UI target: modern visual language, cube-like/cuberpunk theme baseline.

@@ -10,7 +10,7 @@
   - `theme set cuberpunk`
   - `mode cpu` / `mode gpu` / `mode auto`
   - `render fps target 120`
-  - `shell fish` `shell auto-init on|off`
+  - `shell fish` `shell zsh` `shell auto-init on|off`
 
 ## Persistence
 - All changes write to a typed config model in app profile with schema versioning.

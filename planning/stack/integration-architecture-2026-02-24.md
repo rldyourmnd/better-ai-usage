@@ -31,6 +31,8 @@
 
 6. Shell Integration (`features/shell-integration`)
 - fish + Starship bootstrap (init/activation) через адаптеры для future-свободы.
+- Дополнительный fallback-путь на `zsh` для совместимости и стабильности.
+- Bash не является обязательным целевым shell в v1.0.0 на Linux/macOS; совместимость строится по базовым ANSI/terminal-поведениям.
 
 ## OS-структура (логическое разделение)
 
