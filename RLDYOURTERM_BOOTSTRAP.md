@@ -21,7 +21,12 @@ git submodule update --init --recursive
 
 - добавлен сабмодуль `rldyourterm` (upstream в `main`)
 - добавлен локальный запускатель `./scripts/rldyourterm`
+- git-исключения для x11-графики (`finl_unicode`, `xcb-imdkit`) переведены на форки в `rldyourmnd`
 
 ## 4) Ребрендинг статуса
 
 - CLI-обвязка `rldyourterm-stable` и конфиг/документация уже переведены на новый бренд
+
+## 5) Карта форков зависимостей
+
+- `docs/operations/dependency-forks.md`
