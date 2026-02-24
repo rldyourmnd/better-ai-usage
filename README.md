@@ -107,4 +107,4 @@ dependencies or toolchain baselines.
 See `LICENSE`.
 
 Version: 1.0.0
-Special thanks to WezTerm for the architectural foundation that inspired this project.
+Special thanks to the original WezTerm authors and contributors (MIT licensed) for the architectural foundation that inspired this project.
