@@ -72,8 +72,8 @@ If you changed tool versions or validation assumptions:
 ## 🛠️ Development Setup
 
 ```bash
-# Fork the repository on GitHub
-# Clone your fork
+# Fork the repository on GitHub (if you need an alternative)
+# Clone repository
 git clone https://github.com/YOUR_USERNAME/rldyourterm.git
 cd rldyourterm
 
@@ -87,7 +87,7 @@ git checkout -b feature/your-feature-name
 git add .
 git commit -m "feat: description of your changes"
 
-# Push to your fork
+# Push to your branch
 git push origin feature/your-feature-name
 
 # Create a Pull Request on GitHub

@@ -11,7 +11,7 @@ fi
 
 cd "$TERM_DIR"
 
-echo "Launching rldyourterm from local fork (cargo release)"
+echo "Launching rldyourterm from local source snapshot (cargo release)"
 if [[ -n "${RLDYOURTERM_BIN_NAME:-}" ]]; then
   cargo run --release --bin "$RLDYOURTERM_BIN_NAME" -- start "$@"
   exit 0

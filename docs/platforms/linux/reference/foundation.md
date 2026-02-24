@@ -31,7 +31,7 @@ Platform-specific production runbooks:
 tmp_key="$(mktemp)"
 curl --proto '=https' --tlsv1.2 -fsSL https://apt.fury.io/rldyourterm/gpg.key -o "$tmp_key"
 # Keep the upstream terminal package repository source; keyring filename is
-# namespaced for this forked installer.
+# namespaced for this installer.
 sudo gpg --yes --dearmor -o /usr/share/keyrings/rldyourterm-archive-keyring.gpg "$tmp_key"
 rm -f "$tmp_key"
 
@@ -39,7 +39,7 @@ rm -f "$tmp_key"
 echo "deb [signed-by=/usr/share/keyrings/rldyourterm-archive-keyring.gpg] https://apt.fury.io/rldyourterm/ * *" | sudo tee /etc/apt/sources.list.d/rldyourterm.list
 
 # Install
-# Keep package namespace aligned with this forked repo.
+# Keep package namespace aligned with this repo.
 sudo apt-get update
 sudo DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends rldyourterm
 ```

@@ -9,4 +9,4 @@
   - `docs/platforms/linux/reference/foundation.md`
   - `wiki/Operations-Runbook.md`
 - Added launcher/build consolidation around `rldyourterm` entrypoints and wrappers.
-- Preserved foundation runtime code as a forked upstream terminal core under `rldyourterm/` for source continuity.
+- Preserved foundation runtime code as the upstream terminal core under `rldyourterm/` for source continuity.

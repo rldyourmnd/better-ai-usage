@@ -54,7 +54,7 @@ into PowerShell scripts.
 
 ### Foundation
 
-- WinGet: `rldyourterm` (mapped to command `rldyourterm` in this fork), `Microsoft.PowerShell`, `Starship.Starship`, `Git.Git`
+- WinGet: `rldyourterm` (mapped to command `rldyourterm` in this distribution), `Microsoft.PowerShell`, `Starship.Starship`, `Git.Git`
 - Optional font: `DEVCOM.JetBrainsMonoNerdFont`
 - Config sync:
   - `configs/rldyourterm/rldyourterm.lua` -> `~/.rldyourterm.lua`
@@ -129,7 +129,7 @@ Native Windows flow uses PowerShell + Starship. Fish integration is recommended
 via WSL distribution (install fish inside WSL), because Fish support on Windows
 is primarily through compatibility environments (WSL/MSYS2/Cygwin).
 
-Shared rldyourterm config is platform-gated with `rldterm.target_triple` (API module variable in this fork):
+Shared rldyourterm config is platform-gated with `rldterm.target_triple` (API module variable in this terminal project):
 
 - Windows defaults to `pwsh`/`powershell.exe`
 - macOS/Linux defaults to Fish when available
