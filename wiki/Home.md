@@ -1,6 +1,6 @@
-# Awesome Terminal for AI Wiki
+# rldyourterm Wiki
 
-This wiki is the operational playbook for `awesome-terminal-for-ai`.
+This wiki is the operational playbook for `rldyourterm`.
 
 ## Scope
 
@@ -33,10 +33,10 @@ This wiki is the operational playbook for `awesome-terminal-for-ai`.
 
 ## Canonical Sources
 
-- README: <https://github.com/rldyourmnd/awesome-terminal-for-ai/blob/main/README.md>
-- Platform docs: <https://github.com/rldyourmnd/awesome-terminal-for-ai/tree/main/docs/platforms>
-- Operations docs: <https://github.com/rldyourmnd/awesome-terminal-for-ai/tree/main/docs/operations>
-- Linux reference docs: <https://github.com/rldyourmnd/awesome-terminal-for-ai/tree/main/docs/platforms/linux/reference>
+- README: <https://github.com/rldyourmnd/rldyourterm/blob/main/README.md>
+- Platform docs: <https://github.com/rldyourmnd/rldyourterm/tree/main/docs/platforms>
+- Operations docs: <https://github.com/rldyourmnd/rldyourterm/tree/main/docs/operations>
+- Linux reference docs: <https://github.com/rldyourmnd/rldyourterm/tree/main/docs/platforms/linux/reference>
 
 ## Wiki Maintenance
 

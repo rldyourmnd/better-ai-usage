@@ -16,24 +16,24 @@ Canonical quick-start is maintained in `README.md` (`Quick Start` section). This
 ### Linux
 
 ```bash
-git clone https://github.com/rldyourmnd/awesome-terminal-for-ai.git
-cd awesome-terminal-for-ai
+git clone https://github.com/rldyourmnd/rldyourterm.git
+cd rldyourterm
 ./scripts/install.sh
 ```
 
 ### macOS
 
 ```bash
-git clone https://github.com/rldyourmnd/awesome-terminal-for-ai.git
-cd awesome-terminal-for-ai
+git clone https://github.com/rldyourmnd/rldyourterm.git
+cd rldyourterm
 ./scripts/install.sh
 ```
 
 ### Windows (PowerShell)
 
 ```powershell
-git clone https://github.com/rldyourmnd/awesome-terminal-for-ai.git
-cd awesome-terminal-for-ai
+git clone https://github.com/rldyourmnd/rldyourterm.git
+cd rldyourterm
 .\scripts\install-windows.ps1
 ```
 

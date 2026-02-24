@@ -100,7 +100,7 @@ dependencies or toolchain baselines.
 
 ## License
 
-See `LICENSE.md`.
+See `LICENSE`.
 
 Version: 1.0.0
 Special thanks to WezTerm for the architectural foundation that inspired this project.

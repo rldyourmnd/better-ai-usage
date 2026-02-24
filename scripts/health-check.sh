@@ -2,7 +2,7 @@
 # ═══════════════════════════════════════════════════════════════════════════════
 # HEALTH CHECK
 # ═══════════════════════════════════════════════════════════════════════════════
-# Runs a full pre-flight and runtime validation for the Awesome Terminal for AI repo.
+# Runs a full pre-flight and runtime validation for the rldyourterm repo.
 # Run: ./scripts/health-check.sh
 # Run summary only: ./scripts/health-check.sh --summary
 # Run strict mode: ./scripts/health-check.sh --strict

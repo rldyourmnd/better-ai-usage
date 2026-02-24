@@ -4,7 +4,7 @@
 
 Use GitHub Security Advisories to report vulnerabilities:
 
-- <https://github.com/rldyourmnd/awesome-terminal-for-ai/security/advisories>
+- <https://github.com/rldyourmnd/rldyourterm/security/advisories>
 
 ## Security Baselines in This Repo
 
@@ -28,4 +28,4 @@ Use GitHub Security Advisories to report vulnerabilities:
 
 ## Policy Reference
 
-- <https://github.com/rldyourmnd/awesome-terminal-for-ai/blob/main/SECURITY.md>
+- <https://github.com/rldyourmnd/rldyourterm/blob/main/SECURITY.md>

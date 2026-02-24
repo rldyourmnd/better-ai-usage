@@ -29,5 +29,5 @@ The project follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) and
 
 ---
 
-[Unreleased]: https://github.com/rldyourmnd/awesome-terminal-for-ai/compare/v1.0.0...HEAD
-[1.0.0]: https://github.com/rldyourmnd/awesome-terminal-for-ai/releases/tag/v1.0.0
+[Unreleased]: https://github.com/rldyourmnd/rldyourterm/compare/v1.0.0...HEAD
+[1.0.0]: https://github.com/rldyourmnd/rldyourterm/releases/tag/v1.0.0

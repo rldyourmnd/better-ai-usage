@@ -4,12 +4,12 @@
 
 | Version | Supported          |
 | ------- | ------------------ |
-| 2.x     | :white_check_mark: |
-| 1.x     | :x:                |
+| 1.x     | :white_check_mark: |
+| < 1.x   | :x:                |
 
 ## Reporting a Vulnerability
 
-We take the security of Awesome Terminal for AI seriously. If you have discovered a security vulnerability, we appreciate your help in disclosing it to us in a responsible manner.
+We take the security of rldyourterm seriously. If you have discovered a security vulnerability, we appreciate your help in disclosing it to us in a responsible manner.
 
 ### How to Report
 
@@ -17,7 +17,7 @@ We take the security of Awesome Terminal for AI seriously. If you have discovere
 
 Instead, please report them via GitHub Security Advisories:
 
-1. Go to the [Security Advisories](https://github.com/rldyourmnd/awesome-terminal-for-ai/security/advisories) page
+1. Go to the [Security Advisories](https://github.com/rldyourmnd/rldyourterm/security/advisories) page
 2. Click "Report a vulnerability"
 3. Fill out the form with details about the vulnerability
 
@@ -47,7 +47,7 @@ Please include the following information:
 
 ## Security Best Practices
 
-When using Awesome Terminal for AI:
+When using rldyourterm:
 
 1. **Review installation scripts** before running them
 2. **Use sudo only when necessary** - our scripts only require sudo for system packages
@@ -67,4 +67,4 @@ When using Awesome Terminal for AI:
 - Release downloads can fail integrity checks when upstream checksums are missing;
   prefer official release assets and documented checksum values when pinning.
 
-Thank you for helping keep Awesome Terminal for AI secure! 🔐
+Thank you for helping keep rldyourterm secure! 🔐

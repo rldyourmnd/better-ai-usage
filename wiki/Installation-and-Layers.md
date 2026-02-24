@@ -54,5 +54,5 @@
 
 ## Canonical References
 
-- Linux layer docs: <https://github.com/rldyourmnd/awesome-terminal-for-ai/tree/main/docs/platforms/linux/reference/layers>
-- Linux foundation docs: <https://github.com/rldyourmnd/awesome-terminal-for-ai/blob/main/docs/platforms/linux/reference/foundation.md>
+- Linux layer docs: <https://github.com/rldyourmnd/rldyourterm/tree/main/docs/platforms/linux/reference/layers>
+- Linux foundation docs: <https://github.com/rldyourmnd/rldyourterm/blob/main/docs/platforms/linux/reference/foundation.md>

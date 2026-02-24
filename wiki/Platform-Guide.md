@@ -28,6 +28,6 @@
 
 ## Platform Docs
 
-- Linux: <https://github.com/rldyourmnd/awesome-terminal-for-ai/blob/main/docs/platforms/linux/README.md>
-- macOS: <https://github.com/rldyourmnd/awesome-terminal-for-ai/blob/main/docs/platforms/macos/README.md>
-- Windows: <https://github.com/rldyourmnd/awesome-terminal-for-ai/blob/main/docs/platforms/windows/README.md>
+- Linux: <https://github.com/rldyourmnd/rldyourterm/blob/main/docs/platforms/linux/README.md>
+- macOS: <https://github.com/rldyourmnd/rldyourterm/blob/main/docs/platforms/macos/README.md>
+- Windows: <https://github.com/rldyourmnd/rldyourterm/blob/main/docs/platforms/windows/README.md>

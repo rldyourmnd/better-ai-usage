@@ -1,6 +1,6 @@
-# Contributing to Awesome Terminal for AI
+# Contributing to rldyourterm
 
-First off, thank you for considering contributing to Awesome Terminal for AI! 🎉
+First off, thank you for considering contributing to rldyourterm! 🎉
 
 ## 📜 Table of Contents
 
@@ -19,7 +19,7 @@ This project and everyone participating in it is governed by our [Code of Conduc
 
 ### Report Bugs
 
-Before creating bug reports, please check the [existing issues](https://github.com/rldyourmnd/awesome-terminal-for-ai/issues) as your issue might have already been reported.
+Before creating bug reports, please check the [existing issues](https://github.com/rldyourmnd/rldyourterm/issues) as your issue might have already been reported.
 
 When you are creating a bug report, please include as many details as possible:
 
@@ -31,7 +31,7 @@ When you are creating a bug report, please include as many details as possible:
 
 ### Suggest Enhancements
 
-Enhancement suggestions are tracked as [GitHub issues](https://github.com/rldyourmnd/awesome-terminal-for-ai/issues). When creating an enhancement suggestion, include:
+Enhancement suggestions are tracked as [GitHub issues](https://github.com/rldyourmnd/rldyourterm/issues). When creating an enhancement suggestion, include:
 
 - **Use a clear and descriptive title**
 - **Provide a step-by-step description of the suggested enhancement**
@@ -74,8 +74,8 @@ If you changed tool versions or validation assumptions:
 ```bash
 # Fork the repository on GitHub
 # Clone your fork
-git clone https://github.com/YOUR_USERNAME/awesome-terminal-for-ai.git
-cd awesome-terminal-for-ai
+git clone https://github.com/YOUR_USERNAME/rldyourterm.git
+cd rldyourterm
 
 # Create a branch for your changes
 git checkout -b feature/your-feature-name
@@ -192,7 +192,7 @@ When suggesting new tools, consider these criteria:
 ## ❓ Questions?
 
 Feel free to:
-- Open an [Issue](https://github.com/rldyourmnd/awesome-terminal-for-ai/issues)
+- Open an [Issue](https://github.com/rldyourmnd/rldyourterm/issues)
 - Ask in an issue with the `question` label
 
 ---

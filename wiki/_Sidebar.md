@@ -1,4 +1,4 @@
-## Awesome Terminal for AI Wiki
+## rldyourterm Wiki
 
 - [Home](Home)
 - [Platform Guide](Platform-Guide)
